@@ -1,4 +1,0 @@
-# inCollege
-# inCollege
-# inCollege
-# inCollege
