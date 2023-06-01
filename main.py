@@ -14,7 +14,7 @@ if user_auth.lower() == "l":
 
     is_valid_login = auth.login(users, username, password)
     while not is_valid_login:
-        print("Username or password didn't match!\n")
+        print("Incorrect username / password, please try again\n")
         username = input("Username: ")
         password = input("Password: ")
         is_valid_login = auth.login(users, username, password)
