@@ -19,7 +19,7 @@ if user_auth.lower() == "l":
         password = input("Password: ")
         is_valid_login = auth.login(users, username, password)
 
-    state = states[0] # set the state to loggedn_in
+    state = states[0] # set the state to logged_in
     print("\nYou have succesfully logged in.")
 
 elif user_auth.lower() == "r":
@@ -45,7 +45,7 @@ elif user_auth.lower() == "r":
         is_valid_password = valid.validate_password(password)
 
     auth.register(users, username, password)
-    state = states[0] # set the state to loggedn_in
+    state = states[0] # set the state to logged_in
     print("\nYou have succesfully created an account.")
 else:
     print("\nInvalid option. Please try again.")
