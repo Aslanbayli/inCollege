@@ -1,4 +1,5 @@
 import bcrypt
+import sys
 
 from user_auth import authentication as auth
 from user_auth import validator as valid
@@ -12,7 +13,6 @@ password_hash = bcrypt.hashpw(password_bytes, salt) # hash the password
 users = {"Admin": password_hash} # {username: password}
 states = ["logged_in"] # add more states as needed
 state = "" # current state
-auth.file_save(users)
 
 print("***** Welcome to inCollege app! *****")
 user_auth = input("(l)ogin | (r)egister: ")
@@ -32,6 +32,10 @@ if user_auth.lower() == "l":
     print("\nYou have succesfully logged in.")
 
 elif user_auth.lower() == "r":
+    
+    if (auth.database_check() == True):
+        sys.exit("All permitted accounts have been created, please come back later")
+
     print("\nFill out the prompts below to create an account.")
     username = input("Username: ")
 
