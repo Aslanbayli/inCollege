@@ -3,7 +3,7 @@ from user_auth import validator as valid
 
 users = {"Admin": "Admin23!"} # {username: password}
 states = ["logged_in"] # add more states as needed
-state = ""
+state = "" # current state
 
 print("***** Welcome to inCollege app! *****")
 user_auth = input("(l)ogin | (r)egister: ")
