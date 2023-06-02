@@ -1,9 +1,10 @@
 from user_auth import authentication as auth
 from user_auth import validator as valid
 
-users = {"Admin": "Admin23!"} # {username: password}
+users = {"Admin": "Admin23!", "aliba": "merc", "asf": "23442"} # {username: password}
 states = ["logged_in"] # add more states as needed
 state = "" # current state
+auth.file_save(users)
 
 print("***** Welcome to inCollege app! *****")
 user_auth = input("(l)ogin | (r)egister: ")
@@ -45,9 +46,8 @@ elif user_auth.lower() == "r":
         is_valid_password = valid.validate_password(password)
 
     auth.register(users, username, password)
+    auth.file_save(users)
     state = states[0] # set the state to logged_in
     print("\nYou have succesfully created an account.")
 else:
     print("\nInvalid option. Please try again.")
-
-# testing
