@@ -1,7 +1,15 @@
+import bcrypt
+
 from user_auth import authentication as auth
 from user_auth import validator as valid
 
-users = {"Admin": "Admin23!"} # {username: password}
+# password hashing using bcrypt
+password = "Admin123!" # password string
+password_bytes = password.encode("utf-8") # convert to byte string 
+salt = bcrypt.gensalt(rounds=12) # generate a salt
+password_hash = bcrypt.hashpw(password_bytes, salt) # hash the password 
+
+users = {"Admin": password_hash} # {username: password}
 states = ["logged_in"] # add more states as needed
 state = "" # current state
 
