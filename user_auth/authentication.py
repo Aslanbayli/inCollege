@@ -5,7 +5,7 @@ def login(users, username, password):
         password = password.encode("utf-8")
         if bcrypt.checkpw(password, users[username]):
             return True 
-        
+
     return False
 
 def register(users, username, password):
