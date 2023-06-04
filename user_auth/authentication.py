@@ -42,3 +42,13 @@ def database_check():
         return True
     else:
         return False
+
+def save_to_dict(users, filename="database"):
+    with open(filename, "r") as file:
+        file.seek(0)
+        for line in file:
+            key, value = line.strip().split(',')
+            value = value[2:-1]
+            value = value.encode("utf-8")
+            # print(key, value)
+            users[key] = value

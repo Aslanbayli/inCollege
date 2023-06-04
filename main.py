@@ -15,6 +15,8 @@ users = {"Admin": password_hash} # {username: password}
 states = ["logged_in"] # add more states as needed
 state = "" # current state
 
+auth.save_to_dict(users)
+
 print("***** Welcome to inCollege app! *****")
 user_auth = input("(l)ogin | (r)egister: ")
 if user_auth.lower() == "l":
