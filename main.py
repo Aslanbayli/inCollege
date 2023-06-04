@@ -1,7 +1,9 @@
 import bcrypt
+import sys
 
 from user_auth import authentication as auth
 from user_auth import validator as valid
+from selection import selectionMenu as select
 
 # password hashing using bcrypt
 password = "Admin123!" # password string
@@ -29,8 +31,13 @@ if user_auth.lower() == "l":
 
     state = states[0] # set the state to logged_in
     print("\nYou have succesfully logged in.")
+    select.selection_menu_options()
 
 elif user_auth.lower() == "r":
+
+    if (auth.database_check() == True):
+        sys.exit("All permitted accounts have been created, please come back later")
+
     print("\nFill out the prompts below to create an account.")
     username = input("Username: ")
 
@@ -53,9 +60,9 @@ elif user_auth.lower() == "r":
         is_valid_password = valid.validate_password(password)
 
     auth.register(users, username, password)
+    auth.file_save(users)
     state = states[0] # set the state to logged_in
     print("\nYou have succesfully created an account.")
+    select.selection_menu_options()
 else:
     print("\nInvalid option. Please try again.")
-
-
