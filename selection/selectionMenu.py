@@ -1,6 +1,6 @@
 def selection_menu_options():
     while True:
-        print("\n******SELECTION MENU******")
+        print("\n****** SELECTION MENU ******")
         print("***(1) SEARCH FOR A JOB***")
         print("***(2) FIND SOMEONE YOU KNOW***")
         print("***(3) LEARN A NEW SKILL***")
@@ -16,10 +16,10 @@ def selection_menu_options():
                 elif result == 'main':
                     continue
         else:
-            print("Invalid choice. Please try again.")
+            print("Invalid choice, please try again.")
 
 def skill_selection():
-    print("\n******SKILL SELECTION******")
+    print("\n****** SKILL SELECTION ******")
     print("***(1) TIME MANAGEMENT SKILLS***")
     print("***(2) CODING LANGUAGE SKILLS***")
     print("***(3) PUBLIC SPEAKING SKILLS***")
@@ -34,4 +34,4 @@ def skill_selection():
         elif choice == '6':
             return 'main'
         else:
-            print("Invalid choice, please try again.")
+            print("Invalid choice, please try again.\n")

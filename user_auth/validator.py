@@ -32,3 +32,7 @@ def validate_password(password):
     
     return True # password is valid
     
+def validate_input(input):
+    if input.lower() == "y" or input.lower() == "n":
+        return True
+    return False
