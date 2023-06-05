@@ -43,6 +43,8 @@ def test_file_save():
     auth.save_to_dict(test, filename="database")
     assert "User1" in test
     assert "User2" in test
+    assert bcrypt.checkpw(b"Password1!", test["User1"])
+    assert bcrypt.checkpw(b"Password2!", test["User2"])
 
 
 # Test database_check function
