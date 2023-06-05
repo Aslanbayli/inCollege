@@ -16,7 +16,7 @@ users = {"Admin": password_hash} # {username: password}
 states = ["logged_in"] # add more states as needed
 state = "" # current state
 
-auth.save_to_dict(users)
+auth.save_to_dict(users) # load the data from file into the dictionary for faster access
 
 print("***** Welcome to inCollege app! *****")
 def main():
