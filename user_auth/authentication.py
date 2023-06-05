@@ -14,8 +14,7 @@ def register(users, username, password):
     password_hash = bcrypt.hashpw(password_bytes, salt) # hash the password 
     users[username] = password_hash
 
-def file_save(users_dict):
-    filename = "database"
+def file_save(users_dict, filename="database"):
     existing_dict = {}
     with open(filename, 'a+') as file:
         file.seek(0)
@@ -29,8 +28,8 @@ def file_save(users_dict):
                 continue
             file.write(f"{username},{password}\n")
 
-def database_check():
-    filename = "database"
+def database_check(filename="database"):
+    
     existing_dict = {}
     with open(filename, 'a+') as file:
         file.seek(0)
