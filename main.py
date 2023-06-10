@@ -1,23 +1,17 @@
-import bcrypt
 import sys
 import time
 
 from user_auth import authentication as auth
 from user_auth import validator as valid
-from selection import selectionMenu as select
+from selection import selection_menu as select
 
 def main():
-    # Password hashing using bcrypt
-    password = "Admin123!" # Password string
-    password_bytes = password.encode("utf-8") # Convert to byte string
-    salt = bcrypt.gensalt(12) # Generate a salt
-    password_hash = bcrypt.hashpw(password_bytes, salt) # Hash the password
-    users = {"Admin": password_hash} # {username: password}
+    users = {} # {username: [password, first_name, last_name]}
 
     states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4} # Add more states as needed
     state = states["start_menu"] # Current state
 
-    auth.save_to_dict(users) # Load the data from file into the dictionary for faster access
+    auth.file_read(users) # Load the data from file into the dictionary for faster access
 
     while state in states.values():
         #User Prompt Messages
@@ -31,17 +25,16 @@ def main():
                 case "r":
                     state = states["register"]
                 case "e":
-                    print("Thank you for visiting!")
+                    print("\nThank you for visiting!")
                     return
                 case _:
                     print("\nInvalid option. Please try again.")
 
         #Promotional Video
         elif(state == states["promotional_video"]):
-            if(user_auth.lower() == "w"):
-                print("\nVideo is now playing.")
-                end_video = input("\nPress Enter when ready to return to the log in screen...")
-                state = states["start_menu"]
+            print("\nVideo is now playing.")
+            input("\nPress Enter when ready to return to the log in screen...")
+            state = states["start_menu"]
 
         #User Log-in
         elif(state == states["logging_in"]):
@@ -53,14 +46,18 @@ def main():
             while not is_valid_login:
                 print("Incorrect username / password")
                 try_again = input("\nWould you like to try again? (y)es | (n)o: ")
-                if valid.validate_input(try_again):
-                    # return to main menu if the answer is no
-                    if try_again.lower() == "n":
-                        print("\nReturning to main menu...")
-                        time.sleep(0.5) # wait 0.5 seconds
-                        state = states["start_menu"] # return to main menu
-                        break 
-                username = input("Username: ")
+                while not valid.validate_input(try_again):
+                    print("\nInvalid option. Please try again.")
+                    try_again = input("\nWould you like to try again? (y)es | (n)o: ")
+
+                # return to main menu if the answer is no
+                if try_again.lower() == "n":
+                    print("\nReturning to main menu...")
+                    time.sleep(0.5) # wait 0.5 seconds
+                    state = states["start_menu"] # return to main menu
+                    break 
+
+                username = input("\nUsername: ")
                 password = input("Password: ")
                 is_valid_login = auth.login(users, username, password)
             
@@ -71,7 +68,7 @@ def main():
 
         #User Register
         elif(state == states["register"]):
-            if (auth.database_check() == True):
+            if (auth.database_check(users) == True):
                 sys.exit("All permitted accounts have been created, please come back later")
 
             print("\nFill out the prompts below to create an account.")
@@ -80,12 +77,21 @@ def main():
             is_valid_username = valid.validate_username(users, username)
             while not is_valid_username:
                 print("Username is already taken.\n")
-                username = input("Username: ")
-                is_valid_username = valid.validate_username(users, username)
+
                 # Back "Button"
                 continue_register = input("\nContinue? (y/n):")
-                if(continue_register.lower() != "n"):
+                while not valid.validate_input(continue_register):
+                    print("\nInvalid option. Please try again.")
+                    continue_register = input("\nContinue? (y/n):")
+                    
+                if(continue_register.lower() == "n"):
                     state = states["start_menu"]
+                    break
+                username = input("Username: ")
+                is_valid_username = valid.validate_username(users, username)
+
+            if (state == states["start_menu"]):
+                continue
 
             password = input("Password: ")
             is_valid_password = valid.validate_password(password)
@@ -96,15 +102,27 @@ def main():
                 print("\tMust contain at least one special character (!, @, #, $, %, ^, &, *, _)")
                 print("\tMust contain at least one digit")
                 print("\tMust contain at least one uppercase letter\n")
+
                 # Back "Button"
                 continue_register = input("\nContinue? (y/n):")
+                while not valid.validate_input(continue_register):
+                    print("\nInvalid option. Please try again.")
+                    continue_register = input("\nContinue? (y/n):")
+
                 if(continue_register.lower() == 'n'):
-                    main()
+                    state = states["start_menu"]
+                    break
+
                 password = input("Password: ")
-                
                 is_valid_password = valid.validate_password(password)
 
-            auth.register(users, username, password)
+            if (state == states["start_menu"]):
+                continue
+
+            first_name = input("First Name: ")
+            last_name = input("Last Name: ")
+
+            auth.register(users, username, password, first_name, last_name)
             auth.file_save(users)
             state = states["logged_in"] # set the state to logged_in
             print("\nYou have succesfully created an account.")

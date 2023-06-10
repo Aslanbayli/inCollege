@@ -1,53 +1,43 @@
 import bcrypt
 
+# Login an existing user
 def login(users, username, password):
     if username in users:
         password = password.encode("utf-8")
-        if bcrypt.checkpw(password, users[username]):
+        if bcrypt.checkpw(password, users[username][0]):
             return True 
 
     return False
 
-def register(users, username, password):
+# Register a new user
+def register(users, username, password, first_name, last_name):
     password_bytes = password.encode("utf-8") # convert to byte string 
-    salt = bcrypt.gensalt(12) # generate a salt
+    salt = bcrypt.gensalt() # generate a salt
     password_hash = bcrypt.hashpw(password_bytes, salt) # hash the password 
-    users[username] = password_hash
+    users[username] = [password_hash, first_name, last_name]
 
-def file_save(users_dict, filename="database"):
-    existing_dict = {}
+# Save the users dictionary to the database file
+def file_save(users, filename="database.csv"):
     with open(filename, 'a+') as file:
-        file.seek(0)
-        for line in file:
-            key, value = line.strip().split(',')
-            existing_dict[key] = value
+        for username in users:
+            passwd = str(users[username][0])
+            f_name = users[username][1]
+            l_name = users[username][2]
+            file.write(f"{username},{passwd},{f_name},{l_name}\n")
 
-    with open(filename, 'a+') as file:
-        for username, password in users_dict.items():
-            if (username in existing_dict):
-                continue
-            file.write(f"{username},{password}\n")
-
-def database_check(filename="database"):
-    
-    existing_dict = {}
-    with open(filename, 'a+') as file:
-        file.seek(0)
-        for line in file:
-            key, value = line.strip().split(',')
-            existing_dict[key] = value
-    
-    if (len(existing_dict) > 5):
+# Check if the database is full
+def database_check(users):
+    if (len(users) > 5):
         return True
     else:
         return False
 
-def save_to_dict(users, filename="database"):
+# Read from the database file and populate the users dictionary
+def file_read(users, filename="database.csv"):
     with open(filename, "r") as file:
         file.seek(0)
         for line in file:
-            key, value = line.strip().split(',')
-            value = value[2:-1]
-            value = value.encode("utf-8")
-            # print(key, value)
-            users[key] = value
+            username, passwd, f_name, l_name = line.strip().split(',')
+            passwd = passwd[2:-1]
+            passwd = passwd.encode("utf-8")
+            users[username] = [passwd, f_name, l_name]
