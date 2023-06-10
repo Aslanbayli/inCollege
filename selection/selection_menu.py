@@ -22,16 +22,17 @@ def selection_menu_options():
 
 def job_search():
     print("\n*****Job Search*****")
-    job_title = input("Job title: ")
-    #Insert functionality here
+    while True:
+        job_title = input("Job title: ")
+        #Insert functionality here
 
-    end_search = input("\nEnd your search? (Return to previous menu) (y/n): ")
-    while not valid.validate_input(end_search):
-        print("\nInvalid option. Please try again.")
         end_search = input("\nEnd your search? (Return to previous menu) (y/n): ")
+        while not valid.validate_input(end_search):
+            print("\nInvalid option. Please try again.")
+            end_search = input("\nEnd your search? (Return to previous menu) (y/n): ")
 
-    if end_search.lower() == 'y':
-        return
+        if end_search.lower() == 'y':
+            return
     
 def skill_selection():
     print("\n****** SKILL SELECTION ******")
