@@ -42,7 +42,6 @@ def database_check(filename="database"):
     else:
         return False
 
-
 def save_to_dict(users, filename="database"):
     with open(filename, "r") as file:
         file.seek(0)

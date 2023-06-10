@@ -14,7 +14,7 @@ def selection_menu_options():
                 elif result == 'main':
                     continue
             elif choice == '2':
-                print("Under construction, check back later.")
+                print("\nUnder construction, check back later.")
                 break
             elif choice == '3':
                 result = skill_selection()
@@ -27,11 +27,11 @@ def selection_menu_options():
         else:
             print("Invalid choice, please try again.")
 def job_search():
-    print("*****Job Search*****")
+    print("\n*****Job Search*****")
     job_title = input("Job title: ")
     #Insert functionality here
 
-    end_search = input("End your search? (Return to previous menu) (y/n): ")
+    end_search = input("\nEnd your search? (Return to previous menu) (y/n): ")
     if end_search == 'y':
         return 'main'
     
@@ -46,9 +46,9 @@ def skill_selection():
     while True:
         choice = input("Please select which skill you would like to develop/work on (press 1-5): ") 
         if choice in ['1', '2', '3', '4', '5']:
-            print("Under construction, check back later.")
+            print("\nUnder construction, check back later.")
             return 'exit'
         elif choice == '6':
             return 'main'
         else:
-            print("Invalid choice, please try again.\n")
+            print("\nInvalid choice, please try again.\n")
