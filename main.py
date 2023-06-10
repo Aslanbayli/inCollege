@@ -13,6 +13,7 @@ def main():
     salt = bcrypt.gensalt(12) # Generate a salt
     password_hash = bcrypt.hashpw(password_bytes, salt) # Hash the password
     users = {"Admin": password_hash} # {username: password}
+
     states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4} # Add more states as needed
     state = states["start_menu"] # Current state
 
@@ -21,10 +22,6 @@ def main():
     while state in states.values():
         #User Prompt Messages
         if(state == states["start_menu"]):
-            print("***** Welcome to inCollege app! *****")
-            print("\n\nListen to an inspiring success story:")
-            success_story = "\"I had problems gaining traction on LinkedIn. Through InCollege, I now have an internship at Raytheon!"
-            print(success_story)
             user_auth = input("\n(w)atch promotional video | (l)ogin | (r)egister | (e)xit: ")
             match user_auth.lower():
                 case "w":
@@ -66,10 +63,11 @@ def main():
                 username = input("Username: ")
                 password = input("Password: ")
                 is_valid_login = auth.login(users, username, password)
-
-            state = states["logged_in"] # set the state to logged_in
-            print("\nYou have succesfully logged in.")
-            select.selection_menu_options()
+            
+            if is_valid_login:
+                state = states["logged_in"] # set the state to logged_in
+                print("\nYou have succesfully logged in.")
+                select.selection_menu_options()
 
         #User Register
         elif(state == states["register"]):
@@ -117,4 +115,8 @@ def main():
             state = states["start_menu"]
 
 if __name__ == "__main__":
+    print("\n***** Welcome to inCollege app! *****")
+    print("\n\nListen to an inspiring success story:")
+    success_story = "\"I had problems gaining traction on LinkedIn. Through InCollege, I now have an internship at Raytheon!\""
+    print(success_story)
     main()

@@ -4,7 +4,7 @@ def validate_username(users, username):
     # Check if username is already taken
     if username in users:
         return False
-    
+
     return True # username is valid
 
 def validate_password(password):
