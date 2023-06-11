@@ -1,4 +1,5 @@
 from user_auth import validator as valid
+from user_auth import authentication as auth
 
 def selection_menu_options():
     while True:
@@ -21,10 +22,38 @@ def selection_menu_options():
             print("\nInvalid option. Please try again.")
 
 def job_search():
+    jobs = []
+    auth.file_job_read(jobs)
     print("\n*****Job Search*****")
     while True:
-        job_title = input("Job title: ")
-        #Insert functionality here
+        print("\n****** JOB SEARCH ******")
+        print("***(1) FIND JOB***")
+        print("***(2) CREATE JOB***")
+        job_selection = input("Please select what option would would like to go to (press 1-2): ")
+        if job_selection in ['1','2']:
+            
+            #Search for a Job
+            if job_selection == '1':
+              print("Under Construction...\n")
+              continue
+                
+            #Create Job
+            elif job_selection == '2':
+                if(len(jobs) < 5):
+                    title = input("Enter the Job Title: ")
+                    description = input("Enter the Job Description: ")
+                    employer = input("Enter the Job Employer: ")
+                    location = input("Enter the Job Location: ")
+                    salary = input("Enter the Job Salary: ")
+                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary}
+                    jobs.append(job)
+                    auth.file_job_save(jobs)
+                else:
+                    print("All permitted jobs have been created, please come back later")
+                
+        else:
+            print("\nInvalid option. Please try again.\n")
+            continue
 
         end_search = input("\nEnd your search? (Return to previous menu) (y/n): ")
         while not valid.validate_input(end_search):

@@ -69,7 +69,9 @@ def main():
         #User Register
         elif(state == states["register"]):
             if (auth.database_check(users) == True):
-                sys.exit("All permitted accounts have been created, please come back later")
+                print("All permitted accounts have been created, please come back later")
+                state = states["start_menu"]
+                continue
 
             print("\nFill out the prompts below to create an account.")
             username = input("Username: ")
