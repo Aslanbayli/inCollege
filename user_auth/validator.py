@@ -32,7 +32,12 @@ def validate_password(password):
     
     return True # password is valid
     
-def validate_input(input):
+def validate_input_yn(input):
     if input.lower() == "y" or input.lower() == "n":
+        return True
+    return False
+
+def validate_input_lrm(input):
+    if input.lower() == "l" or input.lower() == "r" or input.lower() == "m":
         return True
     return False
