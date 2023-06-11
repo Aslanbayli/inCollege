@@ -77,5 +77,3 @@ def test_file_read():
     # See if the read was successful for test.csv
     assert "User1" in test_users_not_full_file_read
     assert "User2" in test_users_not_full_file_read
-
-
