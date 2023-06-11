@@ -18,7 +18,8 @@ def register(users, username, password, first_name, last_name):
 
 # Save the users dictionary to the database file
 def file_save(users, filename="database.csv"):
-    with open(filename, 'a+') as file:
+    with open(filename, 'w') as file:
+        file.seek(0)
         for username in users:
             passwd = str(users[username][0])
             f_name = users[username][1]
