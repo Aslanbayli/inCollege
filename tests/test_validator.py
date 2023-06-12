@@ -74,3 +74,31 @@ def test_validate_password():
     # Test with a password that contains all requirements but is too short
     invalid_password = "Pw0!"  # Length is 4
     assert not valid.validate_password(invalid_password)
+
+def test_validate_input_yn():
+    # Test to see if the conditions hold true
+    assert valid.validate_input_yn("y") == True
+    assert valid.validate_input_yn("n") == True
+    assert valid.validate_input_yn("Y") == True
+    assert valid.validate_input_yn("N") == True
+
+    # Test to see if the conditions are false
+    assert valid.validate_input_yn("Ye") == False
+    assert valid.validate_input_yn("No") == False
+    assert valid.validate_input_yn("BUrdfGEr") == False
+    assert valid.validate_input_yn("KOPLEsxvbe") == False
+
+def test_validate_input_lrm():
+    # Test to see if the conditions hold true
+    assert valid.validate_input_lrm("l") == True
+    assert valid.validate_input_lrm("r") == True
+    assert valid.validate_input_lrm("m") == True
+    assert valid.validate_input_lrm("L") == True
+    assert valid.validate_input_lrm("R") == True
+    assert valid.validate_input_lrm("M") == True
+
+    # Test to see if conditons hold false
+    assert valid.validate_input_lrm("sdfsadf") == False
+    assert valid.validate_input_lrm("dbrebebfk") == False
+    assert valid.validate_input_lrm("Rwqndke") == False
+    assert valid.validate_input_lrm("Pikachu") == False
