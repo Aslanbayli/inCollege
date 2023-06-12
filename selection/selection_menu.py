@@ -1,7 +1,7 @@
 from user_auth import validator as valid
 from util import util as util
 
-def selection_menu_options():
+def selection_menu_options(user): #User is an array of username, firstname, lastname
     while True:
         print("\n****** SELECTION MENU ******")
         print("***(1) SEARCH FOR A JOB***")
@@ -11,7 +11,7 @@ def selection_menu_options():
         choice = input("Please select which option you would like to do (e.x. \"1\"): ")
         if choice in ['1', '2', '3', '4']:
             if choice == '1':
-                job_search()
+                job_search(user)
             elif choice == '2':
                 print("\nUnder construction, check back later....")
             elif choice == '3':
@@ -21,7 +21,7 @@ def selection_menu_options():
         else:
             print("\nInvalid option. Please try again.")
 
-def job_search():
+def job_search(user): #User is an array of username, firstname, lastname
     jobs = []
     util.file_job_read(jobs)
 
@@ -46,7 +46,7 @@ def job_search():
                     employer = input("Enter the Job Employer: ")
                     location = input("Enter the Job Location: ")
                     salary = input("Enter the Job Salary: ")
-                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary}
+                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary, "first_name" : user[1], "last_name" : user[2]}
                     jobs.append(job)
                     util.file_job_save(jobs)
                 else:

@@ -86,12 +86,12 @@ def main():
 
                 username = input("\nUsername: ")
                 password = input("Password: ")
-                is_valid_login = auth.login(users, username, password)
+                user = auth.login(users, username, password) #User is an array of username, firstname, lastname
             
-            if is_valid_login:
+            if user != False:
                 state = states["logged_in"] # set the state to logged_in
                 print("\nYou have succesfully logged in.")
-                select.selection_menu_options()
+                select.selection_menu_options(user)
 
         # User Register
         elif (state == states["register"]):
@@ -151,11 +151,11 @@ def main():
             first_name = input("First Name: ")
             last_name = input("Last Name: ")
 
-            auth.register(users, username, password, first_name, last_name)
+            user = auth.register(users, username, password, first_name, last_name) #User is an array of username, firstname, lastname
             util.file_save(users)
             state = states["logged_in"] # set the state to logged_in
             print("\nYou have succesfully created an account.")
-            select.selection_menu_options()
+            select.selection_menu_options(user)
 
         #State not in states. Sending back to start menu
         else:
