@@ -15,7 +15,9 @@ def file_job_save(jobs, filename = "data/jobs.csv"):
             j_employer = job["employer"]
             j_location = job["location"]
             j_salary = job["salary"]
-            file.write(f"{j_title},{j_description},{j_employer},{j_location},{j_salary}\n")
+            j_first_name = job["first_name"]
+            j_last_name = job["last_name"]
+            file.write(f"{j_title},{j_description},{j_employer},{j_location},{j_salary},{j_first_name},{j_last_name}\n")
 
 # Check if the database is full
 def database_check(users):
@@ -41,9 +43,9 @@ def file_job_read(jobs, filename="data/jobs.csv"):
     with open(filename, "r") as file:
         file.seek(0)
         for line in file:
-            if line.count(',') == 4:
-                j_title, j_description, j_employer, j_location, j_salary = line.strip().split(',')
-                job = {"title" : j_title, "description" : j_description, "employer" : j_employer, "location" : j_location, "salary" : j_salary}
+            if line.count(',') == 6:
+                j_title, j_description, j_employer, j_location, j_salary, j_first_name, j_last_name = line.strip().split(',')
+                job = {"title" : j_title, "description" : j_description, "employer" : j_employer, "location" : j_location, "salary" : j_salary, "first_name" : j_first_name, "last_name" : j_last_name}
                 jobs.append(job)
             else:
                 continue
