@@ -65,7 +65,7 @@ def main():
 
         # User Log-in
         elif (state == states["logging_in"]):
-            print("\nEnter your credentiasls to login.")
+            print("\nEnter your credentials to login.")
             username = input("Username: ")
             password = input("Password: ")
 
