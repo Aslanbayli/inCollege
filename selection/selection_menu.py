@@ -46,7 +46,7 @@ def job_search(user): #User is an array of username, firstname, lastname
                     employer = input("Enter the Job Employer: ")
                     location = input("Enter the Job Location: ")
                     salary = input("Enter the Job Salary: ")
-                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary, "first_name" : user[1], "last_name" : user[2]}
+                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary, "first_name" : user[0], "last_name" : user[1]}
                     jobs.append(job)
                     util.file_job_save(jobs)
                 else:

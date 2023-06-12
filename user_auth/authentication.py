@@ -5,8 +5,7 @@ def login(users, username, password):
     if username in users:
         password = password.encode("utf-8")
         if bcrypt.checkpw(password, users[username][0]):
-            user = [username, users[username][1], users[username][2]] #username, firstname, lastname
-            return user
+            return True
 
     return False
 
