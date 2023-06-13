@@ -23,8 +23,8 @@ def test_file_save():
 # Test file job save function
 def test_file_job_save():
     test_jobs_save = [
-        {"title" : "TESTING TITLE", "description" : "TESTING DESCRIPTION", "employer" : "TESTING EMPLOYER", "location" : "TESTING LOCATION", "salary" : "TESTING SALARY"},
-        {"title" : "TESTING TITLE123", "description" : "TESTING DESCRIPTION123", "employer" : "TESTING EMPLOYER123", "location" : "TESTING LOCATION123", "salary" : "TESTING SALARY123"}
+        {"title" : "TESTING TITLE", "description" : "TESTING DESCRIPTION", "employer" : "TESTING EMPLOYER", "location" : "TESTING LOCATION", "salary" : "TESTING SALARY", "first_name": "FIRST_NAME", "last_name": "LAST_NAME"},
+        {"title" : "TESTING TITLE123", "description" : "TESTING DESCRIPTION123", "employer" : "TESTING EMPLOYER123", "location" : "TESTING LOCATION123", "salary" : "TESTING SALARY123", "first_name": "FIRST_NAME123", "last_name": "LAST_NAME123"}
     ]
     test_filename = "test_jobs.csv"
 
@@ -65,12 +65,12 @@ def test_file_read():
 # Test file job read function
 def test_file_job_read():
     test_jobs_compare1 = [
-        {"title" : "TESTING TITLE", "description" : "TESTING DESCRIPTION", "employer" : "TESTING EMPLOYER", "location" : "TESTING LOCATION", "salary" : "TESTING SALARY"},
-        {"title" : "TESTING TITLE123", "description" : "TESTING DESCRIPTION123", "employer" : "TESTING EMPLOYER123", "location" : "TESTING LOCATION123", "salary" : "TESTING SALARY123"}
+        {"title" : "TESTING TITLE", "description" : "TESTING DESCRIPTION", "employer" : "TESTING EMPLOYER", "location" : "TESTING LOCATION", "salary" : "TESTING SALARY", "first_name": "FIRST_NAME", "last_name": "LAST_NAME"},
+        {"title" : "TESTING TITLE123", "description" : "TESTING DESCRIPTION123", "employer" : "TESTING EMPLOYER123", "location" : "TESTING LOCATION123", "salary" : "TESTING SALARY123", "first_name": "FIRST_NAME123", "last_name": "LAST_NAME123"}
     ]
     test_jobs_compare2 = [
-        {"title" : "TESTING TITL", "description" : "TESTING DESCRPTION", "employer" : "TESTING EMPLOER", "location" : "TESTING LOCION", "salary" : "TESTING SRY"},
-        {"title" : "TESTING TITLE123", "description" : "TESTNG DESCRIPTIO23", "employer" : "TESTING EMPLOYER123", "location" : "TESTNG LO09ATION123", "salary" : "TESTING SALARY123"}
+        {"title" : "TESTING TITL", "description" : "TESTING DESCRPTION", "employer" : "TESTING EMPLOER", "location" : "TESTING LOCION", "salary" : "TESTING SRY", "first_name": "FIRST_adNAmE", "last_name": "LASsssT_NaAAMeME"},
+        {"title" : "TESTING TITLE123", "description" : "TESTNG DESCRIPTIO23", "employer" : "TESTING EMPLOYER123", "location" : "TESTNG LO09ATION123", "salary" : "TESTING SALARY123", "first_name": "FIRST__NAME", "last_name": "LASt___NAME"}
     ]
     test_filename = "test_jobs.csv"
 
