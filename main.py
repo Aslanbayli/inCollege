@@ -73,6 +73,7 @@ def main():
             while not is_valid_login:
                 print("Incorrect username / password")
                 try_again = input("\nWould you like to try again? (y)es | (n)o: ")
+
                 while not valid.validate_input_yn(try_again):
                     print("\nInvalid option. Please try again.")
                     try_again = input("\nWould you like to try again? (y)es | (n)o: ")
@@ -86,11 +87,12 @@ def main():
 
                 username = input("\nUsername: ")
                 password = input("Password: ")
-                user = auth.login(users, username, password) #User is an array of username, firstname, lastname
-            
-            if user != False:
+                is_valid_login = auth.login(users, username, password)
+        
+            if is_valid_login:
                 state = states["logged_in"] # set the state to logged_in
                 print("\nYou have succesfully logged in.")
+                user = [users[username][1], users[username][2]]
                 select.selection_menu_options(user)
 
         # User Register
