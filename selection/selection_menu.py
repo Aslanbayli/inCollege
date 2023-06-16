@@ -7,7 +7,9 @@ def selection_menu_options(user): #User is an array of username, firstname, last
         print("***(1) SEARCH FOR A JOB***")
         print("***(2) FIND SOMEONE YOU KNOW***")
         print("***(3) LEARN A NEW SKILL***")
-        print("***(4) LOG OUT***")
+        print("***(4) USEFUL LINKS***")
+        print("***(5) IMPORTANT LINKS***")
+        print("***(6) LOG OUT***")
         choice = input("Please select which option you would like to do (e.x. \"1\"): ")
         if choice in ['1', '2', '3', '4']:
             if choice == '1':
@@ -17,6 +19,10 @@ def selection_menu_options(user): #User is an array of username, firstname, last
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
+                useful_links("logged_in")
+            elif choice == '5':
+                pass #This is for important links
+            elif choice == '6':
                 return
         else:
             print("\nInvalid option. Please try again.")
@@ -85,3 +91,58 @@ def skill_selection():
             return
         else:
             print("\nInvalid option. Please try again.\n")
+
+def useful_links(state):
+    
+    while True:
+        print("\n****** USEFUL LINKS ******")
+        print("***(1) GENERAL***")
+        print("***(2) BROWSE INCOLLEGE***")
+        print("***(3) BUSINESS SOLUTIONS***")
+        print("***(4) DIRECTORIES***")
+        print("***(5) RETURN***")
+
+        choice = input("Please select one of these useful links (press 1-4): ") #go to the section based on user's choice
+        if choice == '1':
+            current = general(state)
+            if current == "logging_in":
+                return current
+            else:
+                pass
+        elif choice in ['2','3','4']:
+            print("\nUnder construction, check back later ...")
+            
+        elif choice == '5':
+            return "menu"
+            
+
+def general(state):
+    while True:
+        print("\n****** GENERAL ******")
+        print("***(1) SIGN UP***")
+        print("***(2) HELP CENTER***")
+        print("***(3) ABOUT***")
+        print("***(4) PRESS***")
+        print("***(5) BLOG***")
+        print("***(6) CAREERS***")
+        print("***(7) DEVELOPERS***")
+        print("***(8) RETURN***")
+        choice = input("Please select one of these options to discover more information (press 1-7): ")
+        if choice == '1' and state == "not_logged_in": #if not logged in, it will lead to the login section
+            return "logging_in"
+        elif choice == '1' and state == "logged_in":
+            print("\nYou have already logged in, do not need to relogin")
+        elif choice == '2':
+            print("\nWe're here to help")
+        elif choice == '3':
+            print("\nIn College: Welcome to In College, the world's largest college student network with many users in many countries and territories worldwide")
+           
+        elif choice == '4':
+            print("\nIn College Pressroom: Stay on top of the latest news, updates, and reports")
+           
+        elif choice in ['5','6','7']:
+            print("\nUnder Construction")
+        elif choice == '8':
+            return
+        else:
+            print("Invalid choice. Please try again!")

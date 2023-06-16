@@ -52,7 +52,9 @@ def file_job_read(jobs, filename="data/jobs.csv"):
 
 def connect(users, f_name, l_name):
     for username in users:
-        if users[username][1] == f_name and users[username][2] == l_name:
+        first_name = users[username][1]
+        last_name = users[username][2]
+        if first_name.lower() == f_name and last_name.lower() == l_name:
             return True
     return False
     
