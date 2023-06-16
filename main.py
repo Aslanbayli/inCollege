@@ -8,7 +8,7 @@ from util import util as util
 def main():
     users = {} # {username: [password, first_name, last_name]}
 
-    states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4, "connect": 5} # Add more states as needed
+    states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4, "connect": 5, "useful_links" : 6, "important_links" : 7} # Add more states as needed
     state = states["start_menu"] # Current state
 
     util.file_read(users) # Load the data from file into the dictionary for faster access
@@ -16,7 +16,7 @@ def main():
     while state in states.values():
         # User Prompt Messages
         if (state == states["start_menu"]):
-            user_auth = input("\n(w)atch promotional video | (f)ind people you might know | (l)ogin | (r)egister | (e)xit: ")
+            user_auth = input("\n(w)atch promotional video | (f)ind people you might know | (u)seful link | InCollege (i)mportant links | (l)ogin | (r)egister | (e)xit: ")
             match user_auth.lower():
                 case "w":
                     state = states["promotional_video"]
@@ -26,6 +26,10 @@ def main():
                     state = states["logging_in"]
                 case "r":
                     state = states["register"]
+                case "i":
+                    state = states["important_links"]
+                case "u":
+                    state = states["useful_links"]
                 case "e":
                     print("\nThank you for visiting!")
                     return
@@ -62,6 +66,13 @@ def main():
                 print("\nThey are not yet a part of the InCollege system yet.")
                 state = states["start_menu"]
                     
+
+        elif(state == states["useful_links"]):
+            check = select.useful_links("not_logged_in")
+            if check == "logging_in":
+                state = states["logging_in"]
+            else:
+                state = states["start_menu"]
 
         # User Log-in
         elif (state == states["logging_in"]):
@@ -157,6 +168,7 @@ def main():
             util.file_save(users)
             state = states["logged_in"] # set the state to logged_in
             print("\nYou have succesfully created an account.")
+        elif (state == states["logged_in"]):
             select.selection_menu_options(user)
 
         #State not in states. Sending back to start menu
