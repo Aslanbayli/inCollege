@@ -71,6 +71,8 @@ def main():
             check = select.useful_links("not_logged_in")
             if check == "logging_in":
                 state = states["logging_in"]
+            elif check == "registering":
+                state = states["register"]
             else:
                 state = states["start_menu"]
 

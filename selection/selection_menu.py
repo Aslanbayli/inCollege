@@ -105,7 +105,7 @@ def useful_links(state):
         choice = input("Please select one of these useful links (press 1-4): ") #go to the section based on user's choice
         if choice == '1':
             current = general(state)
-            if current == "logging_in":
+            if current == "logging_in" or "registering":
                 return current
             else:
                 pass
@@ -129,7 +129,19 @@ def general(state):
         print("***(8) RETURN***")
         choice = input("Please select one of these options to discover more information (press 1-7): ")
         if choice == '1' and state == "not_logged_in": #if not logged in, it will lead to the login section
-            return "logging_in"
+            while True:
+                print("\n***(1) LOGGING IN***")
+                print("***(2) REGISTER***")
+                print("***(3) RETURN***")
+                choice = input("Would you like to login or register a new account (press 1-2): ")
+                if choice == '1':
+                    return "logging_in"
+                elif choice == '2':
+                    return "registering"
+                elif choice == '3':
+                    break
+                else:
+                    print("Can you try again?")
         elif choice == '1' and state == "logged_in":
             print("\nYou have already logged in, do not need to relogin")
         elif choice == '2':
