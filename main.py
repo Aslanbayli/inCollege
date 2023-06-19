@@ -65,8 +65,16 @@ def main():
             else:
                 print("\nThey are not yet a part of the InCollege system yet.")
                 state = states["start_menu"]
-                    
-
+        # Important Links 
+        elif(state == states["important_links"]):
+            check = select.important_links("not_logged_in")
+            if check == "logging_in":
+                state = states["logging_in"]
+            elif check == "registering":
+                state = states["register"]
+            else:
+                state = states["start_menu"]
+        # Useful Links    
         elif(state == states["useful_links"]):
             check = select.useful_links("not_logged_in")
             if check == "logging_in":

@@ -1,3 +1,4 @@
+import main as main
 from user_auth import validator as valid
 from util import util as util
 
@@ -10,8 +11,9 @@ def selection_menu_options(user): #User is an array of username, firstname, last
         print("***(4) USEFUL LINKS***")
         print("***(5) IMPORTANT LINKS***")
         print("***(6) LOG OUT***")
+        
         choice = input("Please select which option you would like to do (e.x. \"1\"): ")
-        if choice in ['1', '2', '3', '4']:
+        if choice in ['1', '2', '3', '4', '5', '6']:
             if choice == '1':
                 job_search(user)
             elif choice == '2':
@@ -21,7 +23,7 @@ def selection_menu_options(user): #User is an array of username, firstname, last
             elif choice == '4':
                 useful_links("logged_in")
             elif choice == '5':
-                pass #This is for important links
+                important_links("logged_in")
             elif choice == '6':
                 return
         else:
@@ -115,7 +117,50 @@ def useful_links(state):
         elif choice == '5':
             return "menu"
             
+def important_links(state):
+    while True:
+        print("\n****** IMPORTANT LINKS ******")
+        print("***(1) COPYRIGHT NOTICE ***")
+        print("***(2) ABOUT ***")
+        print("***(3) ACCESSIBILITY ***")
+        print("***(4) USER AGREEMENT ***")
+        print("***(5) PRIVACY POLICY ***")
+        print("***(6) COOKIE POLICY ***")
+        print("***(7) COPYRIGHT POLICY ***")
+        print("***(8) BRAND POLICY ***")
+        print("***(10) LANGUAGES ***")
+        print("***(11) RETURN ***")
 
+        choice = input("Please select one of these useful links (press 1-11): ") #go to the section based on user's choice
+        if choice == '5':
+            print("\n****** PRIVACY POLICY ******")
+            print("***(1) GUEST CONTROLS ***")
+            print("***(2) RETURN ***")
+            privacy_choice = input("Please select one of these options (press 1-2): ")
+            if privacy_choice == '1':
+                print("\nUnder construction, check back later ...\n")
+            #return to previous menu otherwise
+        elif choice in ['1','2','3','4','6','7','8','9']:
+            print("\nUnder construction, check back later ...\n")
+        elif choice == '10':
+            print("\n****** LANGUAGES ******")
+            print("***(1) ENGLISH ***")
+            print("***(2) SPANISH ***")
+            language = input("Please select one of these languages(press 1-2): ")
+            if language in ['1','2']:
+                if state == "not_logged_in":
+                    print("\nPlease log in to save language preference.")
+                else:
+                    print("\nLanguage Preference not saved. This feature is still under construction...")
+                    if language == '1':
+                        lang = "English"
+                    elif language == '2':
+                        lang = "Spanish"
+                    #Save lang
+        elif choice == '11':
+            return "menu"
+        else:
+            print("Invalid choice. Please try again!")
 def general(state):
     while True:
         print("\n****** GENERAL ******")
