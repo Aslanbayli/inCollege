@@ -6,7 +6,7 @@ from selection import selection_menu as select
 from util import util as util
 
 def main():
-    users = {} # {username: [password, first_name, last_name]}
+    users = {} # {username: [password, first_name, last_name, language]}
 
     states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4, "connect": 5, "useful_links" : 6, "important_links" : 7} # Add more states as needed
     state = states["start_menu"] # Current state
@@ -113,8 +113,8 @@ def main():
             if is_valid_login:
                 state = states["logged_in"] # set the state to logged_in
                 print("\nYou have succesfully logged in.")
-                user = [users[username][1], users[username][2]]
-                select.selection_menu_options(user)
+                user = [users[username][1], users[username][2], users[username][3]]
+                
 
         # User Register
         elif (state == states["register"]):
@@ -180,6 +180,7 @@ def main():
             print("\nYou have succesfully created an account.")
         elif (state == states["logged_in"]):
             select.selection_menu_options(user)
+            state = states["start_menu"]
 
         #State not in states. Sending back to start menu
         else:

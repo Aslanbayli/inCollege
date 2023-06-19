@@ -5,7 +5,8 @@ def file_save(users, filename="data/database.csv"):
             passwd = str(users[username][0])
             f_name = users[username][1]
             l_name = users[username][2]
-            file.write(f"{username},{passwd},{f_name},{l_name}\n")
+            language = users[username][3]
+            file.write(f"{username},{passwd},{f_name},{l_name},{language}\n")
             
 def file_job_save(jobs, filename = "data/jobs.csv"):
     with open(filename, 'w') as file:
@@ -31,11 +32,11 @@ def file_read(users, filename="data/database.csv"):
     with open(filename, "r") as file:
         file.seek(0)
         for line in file:
-            if line.count(',') == 3:
-                username, passwd, f_name, l_name = line.strip().split(',')
+            if line.count(',') == 4:
+                username, passwd, f_name, l_name, language = line.strip().split(',')
                 passwd = passwd[2:-1]
                 passwd = passwd.encode("utf-8")
-                users[username] = [passwd, f_name, l_name]
+                users[username] = [passwd, f_name, l_name, language]
             else:
                 continue
 
