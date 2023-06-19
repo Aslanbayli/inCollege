@@ -2,6 +2,7 @@ import main as main
 from user_auth import validator as valid
 from util import util as util
 
+
 def selection_menu_options(user): #User is an array of username, firstname, lastname
     while True:
         print("\n****** SELECTION MENU ******")
@@ -21,9 +22,9 @@ def selection_menu_options(user): #User is an array of username, firstname, last
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
-                useful_links("logged_in")
+                useful_links("logged_in", user)
             elif choice == '5':
-                important_links("logged_in")
+                important_links("logged_in", user)
             elif choice == '6':
                 return
         else:
@@ -94,7 +95,7 @@ def skill_selection():
         else:
             print("\nInvalid option. Please try again.\n")
 
-def useful_links(state):
+def useful_links(state, user=''):
     
     while True:
         print("\n****** USEFUL LINKS ******")
@@ -117,7 +118,11 @@ def useful_links(state):
         elif choice == '5':
             return "menu"
             
-def important_links(state):
+def important_links(state, user=''):
+    if state == "not_logged_in":
+        pass
+    else:
+        language = user[2]
     while True:
         print("\n****** IMPORTANT LINKS ******")
         print("***(1) COPYRIGHT NOTICE ***")
@@ -143,20 +148,69 @@ def important_links(state):
         elif choice in ['1','2','3','4','6','7','8','9']:
             print("\nUnder construction, check back later ...\n")
         elif choice == '10':
-            print("\n****** LANGUAGES ******")
-            print("***(1) ENGLISH ***")
-            print("***(2) SPANISH ***")
-            language = input("Please select one of these languages(press 1-2): ")
-            if language in ['1','2']:
+            while True:
+                print("\n****** LANGUAGES ******")
                 if state == "not_logged_in":
-                    print("\nPlease log in to save language preference.")
+                    pass
                 else:
-                    print("\nLanguage Preference not saved. This feature is still under construction...")
-                    if language == '1':
-                        lang = "English"
-                    elif language == '2':
-                        lang = "Spanish"
-                    #Save lang
+                    print(f"The current language is {language}, What do you want to change? ")
+                print("***(1) ENGLISH ***")
+                print("***(2) SPANISH ***")
+                print("***(3) RETURN ***")
+                choice = input("Please select one of these languages(press 1-2): ")
+                if choice in ['1','2','3']:
+                    if state == "not_logged_in":
+                        while True:
+                            print("\nYou must have an account to change language")
+                            print("\n***(1) LOGGING IN***")
+                            print("***(2) REGISTER***")
+                            print("***(3) RETURN***")
+                            choice = input("Would you like to login or register a new account (press 1-2): ")
+                            if choice == '1':
+                                return "logging_in"
+                            elif choice == '2':
+                                return "registering"
+                            elif choice == '3':
+                                break
+                            else:
+                                print("Can you try again?")
+                    elif state == "logged_in":
+                        if language == "English" and choice == '1':
+                            print("English is already chosen, please choose other option")
+                            continue
+                        elif language == "Spanish" and choice == '2':
+                            print("Spanish is alrady chosen, please choose other option")
+                        elif language == "English" and choice == '2':
+                            with open("data/database.csv", "r") as file:
+                                lines = file.readlines()
+
+                            with open("data/database.csv", "w") as file:
+                                for line in lines:
+                                    if line.count(',') == 4:
+                                        username, passwd, f_name, l_name, current_language = line.strip().split(',')
+                                        current_language = "Spanish"
+                                        line = ','.join([username, passwd, f_name, l_name, current_language]) + '\n'
+                                    file.write(line)
+                            language = "Spanish"
+                            break
+                        elif language == "Spanish" and choice == '1':
+                            with open("data/database.csv", "r") as file:
+                                lines = file.readlines()
+
+                            with open("data/database.csv", "w") as file:
+                                for line in lines:
+                                    if line.count(',') == 4:
+                                        username, passwd, f_name, l_name, current_language = line.strip().split(',')
+                                        current_language = "English"
+                                        line = ','.join([username, passwd, f_name, l_name, current_language]) + '\n'
+                                    file.write(line)
+                            language = "English"
+                            break
+                        elif choice == '3':
+                            break
+                        else:
+                            print("Please try again")
+                        #Save lang
         elif choice == '11':
             return "menu"
         else:
