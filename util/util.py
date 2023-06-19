@@ -18,7 +18,7 @@ def file_job_save(jobs, filename = "data/jobs.csv"):
             j_first_name = job["first_name"]
             j_last_name = job["last_name"]
             file.write(f"{j_title},{j_description},{j_employer},{j_location},{j_salary},{j_first_name},{j_last_name}\n")
-
+            
 # Check if the database is full
 def database_check(users):
     if (len(users) > 5):
@@ -49,7 +49,7 @@ def file_job_read(jobs, filename="data/jobs.csv"):
                 jobs.append(job)
             else:
                 continue
-
+            
 def connect(users, f_name, l_name):
     for username in users:
         first_name = users[username][1]
