@@ -7,6 +7,7 @@ from util import util as util
 
 def main():
     users = {} # {username: [password, first_name, last_name, language]}
+    user = [] # [username, first_name, last_name, language]
 
     states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4, "connect": 5, "useful_links" : 6, "important_links" : 7} # Add more states as needed
     state = states["start_menu"] # Current state
@@ -51,10 +52,10 @@ def main():
             if found:
                 print("\nThey are a part of the InCollege system.")
 
-                user_auth = input("\nJoin inCollege to connect with them. (l)ogin | (r)egister: ")
+                user_auth = input("\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: ")
                 while not valid.validate_input_lrm(user_auth):
                     print("\nInvalid option. Please try again.")
-                    user_auth = input("\nJoin inCollege to connect with them. (l)ogin | (r)egister: ")
+                    user_auth = input("\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: ")
 
                 if user_auth.lower() == "l":
                     state = states["logging_in"]
@@ -65,18 +66,20 @@ def main():
             else:
                 print("\nThey are not yet a part of the InCollege system yet.")
                 state = states["start_menu"]
-        # Important Links 
-        elif(state == states["important_links"]):
-            check = select.important_links("not_logged_in")
+
+        # Useful Links    
+        elif(state == states["useful_links"]):
+            check = select.useful_links("not_logged_in")
             if check == "logging_in":
                 state = states["logging_in"]
             elif check == "registering":
                 state = states["register"]
             else:
                 state = states["start_menu"]
-        # Useful Links    
-        elif(state == states["useful_links"]):
-            check = select.useful_links("not_logged_in")
+
+        # Important Links 
+        elif(state == states["important_links"]):
+            check = select.important_links("not_logged_in")
             if check == "logging_in":
                 state = states["logging_in"]
             elif check == "registering":
@@ -113,9 +116,8 @@ def main():
             if is_valid_login:
                 state = states["logged_in"] # set the state to logged_in
                 print("\nYou have succesfully logged in.")
-                user = [users[username][1], users[username][2], users[username][3]]
+                user = [username, users[username][1], users[username][2], users[username][3]]
                 
-
         # User Register
         elif (state == states["register"]):
             if (util.database_check(users) == True):
@@ -174,15 +176,17 @@ def main():
             first_name = input("First Name: ")
             last_name = input("Last Name: ")
 
-            user = auth.register(users, username, password, first_name, last_name) #User is an array of username, firstname, lastname
+            user = auth.register(users, username, password, first_name, last_name) # User is an array of username, firstname, lastname
             util.file_save(users)
             state = states["logged_in"] # set the state to logged_in
             print("\nYou have succesfully created an account.")
+
+        # User Logged In
         elif (state == states["logged_in"]):
             select.selection_menu_options(user)
             state = states["start_menu"]
 
-        #State not in states. Sending back to start menu
+        # State not in states. Sending back to start menu
         else:
             state = states["start_menu"]
 

@@ -3,7 +3,7 @@ from user_auth import validator as valid
 from util import util as util
 
 
-def selection_menu_options(user): #User is an array of username, firstname, lastname
+def selection_menu_options(user): # user is an array of username, firstname, lastname, language
     while True:
         print("\n****** SELECTION MENU ******")
         print("***(1) SEARCH FOR A JOB***")
@@ -22,7 +22,7 @@ def selection_menu_options(user): #User is an array of username, firstname, last
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
-                useful_links("logged_in", user)
+                useful_links("logged_in")
             elif choice == '5':
                 important_links("logged_in", user)
             elif choice == '6':
@@ -55,7 +55,7 @@ def job_search(user): #User is an array of username, firstname, lastname
                     employer = input("Enter the Job Employer: ")
                     location = input("Enter the Job Location: ")
                     salary = input("Enter the Job Salary: ")
-                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary, "first_name" : user[0], "last_name" : user[1]}
+                    job = {"title" : title, "description" : description, "employer" : employer, "location" : location, "salary" : salary, "first_name" : user[1], "last_name" : user[2]}
                     jobs.append(job)
                     util.file_job_save(jobs)
                 else:
@@ -95,8 +95,7 @@ def skill_selection():
         else:
             print("\nInvalid option. Please try again.\n")
 
-def useful_links(state, user=''):
-    
+def useful_links(state):
     while True:
         print("\n****** USEFUL LINKS ******")
         print("***(1) GENERAL***")
@@ -105,7 +104,7 @@ def useful_links(state, user=''):
         print("***(4) DIRECTORIES***")
         print("***(5) RETURN***")
 
-        choice = input("Please select one of these useful links (press 1-4): ") #go to the section based on user's choice
+        choice = input("Please select one of these useful links (press 1-4): ") # go to the section based on user's choice
         if choice == '1':
             current = general(state)
             if current == "logging_in" or "registering":
@@ -114,15 +113,16 @@ def useful_links(state, user=''):
                 pass
         elif choice in ['2','3','4']:
             print("\nUnder construction, check back later ...")
-            
         elif choice == '5':
             return "menu"
+        else:
+            print("\nInvalid option. Please try again.\n")
             
 def important_links(state, user=''):
     if state == "not_logged_in":
         pass
     else:
-        language = user[2]
+        language = user[3]
     while True:
         print("\n****** IMPORTANT LINKS ******")
         print("***(1) COPYRIGHT NOTICE ***")
@@ -138,10 +138,10 @@ def important_links(state, user=''):
 
         choice = input("Please select one of these useful links (press 1-10): ") #go to the section based on user's choice
 
-        #Copyright Notice
+        # Copyright Notice
         if choice == '1':
-        print("\n****** COPYRIGHT NOTICE ******")
-            print("""
+            print("\n****** COPYRIGHT NOTICE ******")
+            print(""" 
 © 2023 InCollege. All rights reserved.
 The content, design, and functionality of this website/application, including but not limited to text, graphics, logos, icons, images, audio, video, and software,
 are the property of InCollege or its licensors and are protected by international copyright laws.
@@ -343,7 +343,7 @@ We encourage you to review this policy periodically to stay informed about our u
 6. Contact Us
 If you have any questions or concerns about our use of cookies or this Cookie Policy, please contact us at <inCollege Email>
 Last updated: 6/19/2023
-""")
+"""))
         #Copyright Policy
         elif choice == '7':
             print("\n****** COPYRIGHT POLICY ******")
@@ -429,7 +429,7 @@ Last updated: 6/19/2023""")
                 if state == "not_logged_in":
                     pass
                 else:
-                    print(f"The current language is {language}, What do you want to change? ")
+                    print(f"The current language is {language}, What do you want to change it to? ")
                 print("***(1) ENGLISH ***")
                 print("***(2) SPANISH ***")
                 print("***(3) RETURN ***")
@@ -438,7 +438,7 @@ Last updated: 6/19/2023""")
                     if state == "not_logged_in":
                         while True:
                             print("\nYou must have an account to change language")
-                            print("\n***(1) LOGGING IN***")
+                            print("\n***(1) LOGG IN***")
                             print("***(2) REGISTER***")
                             print("***(3) RETURN***")
                             choice = input("Would you like to login or register a new account (press 1-2): ")
@@ -452,10 +452,10 @@ Last updated: 6/19/2023""")
                                 print("Can you try again?")
                     elif state == "logged_in":
                         if language == "English" and choice == '1':
-                            print("English is already chosen, please choose other option")
+                            print("\nEnglish is already chosen, please choose other option")
                             continue
                         elif language == "Spanish" and choice == '2':
-                            print("Spanish is alrady chosen, please choose other option")
+                            print("\nSpanish is alrady chosen, please choose other option")
                         elif language == "English" and choice == '2':
                             with open("data/database.csv", "r") as file:
                                 lines = file.readlines()
@@ -486,11 +486,11 @@ Last updated: 6/19/2023""")
                             break
                         else:
                             print("Please try again")
-                        #Save lang
         elif choice == '10':
             return "menu"
         else:
             print("Invalid choice. Please try again!")
+
 def general(state):
     while True:
         print("\n****** GENERAL ******")
@@ -505,7 +505,7 @@ def general(state):
         choice = input("Please select one of these options to discover more information (press 1-7): ")
         if choice == '1' and state == "not_logged_in": #if not logged in, it will lead to the login section
             while True:
-                print("\n***(1) LOGGING IN***")
+                print("\n***(1) LOG IN***")
                 print("***(2) REGISTER***")
                 print("***(3) RETURN***")
                 choice = input("Would you like to login or register a new account (press 1-2): ")
@@ -516,7 +516,7 @@ def general(state):
                 elif choice == '3':
                     break
                 else:
-                    print("Can you try again?")
+                    print("Invalid choice. Please try again!")
         elif choice == '1' and state == "logged_in":
             print("\nYou have already logged in, do not need to relogin")
         elif choice == '2':
