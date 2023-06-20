@@ -463,9 +463,8 @@ Last updated: 6/19/2023""")
                 print("***(2) SPANISH ***")
                 print("***(3) RETURN ***")
                 choice = input("Please select one of these languages(press 1-2): ")
-                if choice == '3':
-                    break
-                if choice in ['1','2', '3']:
+                
+                if choice in ['1','2']:
                     if state == "not_logged_in":
                         while True:
                             print("\nYou must have an account to change language")
@@ -477,6 +476,8 @@ Last updated: 6/19/2023""")
                                 return "logging_in"
                             elif choice == '2':
                                 return "registering"
+                            elif choice == '3':
+                                break
                             else:
                                 print("Can you try again?")
                         
@@ -498,6 +499,7 @@ Last updated: 6/19/2023""")
                                         line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
                                     file.write(line)
                             language = "Spanish"
+                            print("Your language has been changed to Spanish")
                             break
                         elif language == "Spanish" and choice == '1':
                             with open("data/database.csv", "r") as file:
@@ -511,9 +513,12 @@ Last updated: 6/19/2023""")
                                         line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
                                     file.write(line)
                             language = "English"
+                            print("Your language has been changed to English")
                             break
                         else:
                             print("Please try again")
+                if choice == '3':
+                    break
         elif choice == '10':
             return "menu"
         else:
