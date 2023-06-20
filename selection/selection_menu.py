@@ -434,13 +434,13 @@ Last updated: 6/19/2023""")
                 print("***(2) SPANISH ***")
                 print("***(3) RETURN ***")
                 choice = input("Please select one of these languages(press 1-2): ")
-                if choice in ['1','2','3']:
+                if choice in ['1','2']:
                     if state == "not_logged_in":
                         while True:
                             print("\nYou must have an account to change language")
-                            print("\n***(1) LOGG IN***")
-                            print("***(2) REGISTER***")
-                            print("***(3) RETURN***")
+                            print("\n***(1) LOGG IN ***")
+                            print("***(2) REGISTER ***")
+                            print("***(3) RETURN ***")
                             choice = input("Would you like to login or register a new account (press 1-2): ")
                             if choice == '1':
                                 return "logging_in"
@@ -450,6 +450,7 @@ Last updated: 6/19/2023""")
                                 break
                             else:
                                 print("Can you try again?")
+                        break
                     elif state == "logged_in":
                         if language == "English" and choice == '1':
                             print("\nEnglish is already chosen, please choose other option")
@@ -486,6 +487,8 @@ Last updated: 6/19/2023""")
                             break
                         else:
                             print("Please try again")
+                elif choice == '3':
+                    break
         elif choice == '10':
             return "menu"
         else:
