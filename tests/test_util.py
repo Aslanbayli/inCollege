@@ -4,8 +4,8 @@ from util import util
 # Test file save function
 def test_file_save():
     users = {
-        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User1LastName", "English"],
-        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt(rounds=12)), "User2FirstName", "User2LastName", "Spanish"],
+        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User1LastName", "English", "False", "False", "True"],
+        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt(rounds=12)), "User2FirstName", "User2LastName", "Spanish", "False", "False", "True"],
     }
 
     test = {}
