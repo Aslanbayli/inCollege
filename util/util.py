@@ -55,7 +55,7 @@ def connect(users, f_name, l_name):
     for username in users:
         first_name = users[username][1]
         last_name = users[username][2]
-        if first_name.lower() == f_name and last_name.lower() == l_name:
+        if first_name == f_name and last_name == l_name:
             return True
     return False
     

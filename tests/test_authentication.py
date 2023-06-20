@@ -1,12 +1,11 @@
 import bcrypt
-import pytest
 from user_auth import authentication as auth
 
 # Test login function
 def test_login():
     users = {
-        "Admin": [bcrypt.hashpw(b"Admin123!", bcrypt.gensalt(rounds=12)), "AdminFirstName", "AdminLastName"],
-        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User2LastName"]
+        "Admin": [bcrypt.hashpw(b"Admin123!", bcrypt.gensalt(rounds=12)), "AdminFirstName", "AdminLastName", "English"],
+        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User2LastName", "Spanish"]
     }
 
     # Valid login

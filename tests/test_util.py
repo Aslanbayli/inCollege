@@ -1,20 +1,18 @@
-import pytest
 import bcrypt
 from util import util
-from user_auth import authentication as auth
 
 # Test file save function
 def test_file_save():
     users = {
-        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User1LastName"],
-        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt(rounds=12)), "User2FirstName", "User2LastName"],
+        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User1LastName", "English"],
+        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt(rounds=12)), "User2FirstName", "User2LastName", "Spanish"],
     }
 
-    test={}
-    auth.file_save(users, filename="test_database.csv")
+    test = {}
+    util.file_save(users, filename="tests/test_database.csv")
 
     # Read the saved file and check if the data is correct
-    auth.file_read(test, filename="test_database.csv")
+    util.file_read(test, filename="tests/test_database.csv")
     assert "User1" in test
     assert "User2" in test
     assert bcrypt.checkpw(b"Password1!", test["User1"][0])
@@ -26,7 +24,7 @@ def test_file_job_save():
         {"title" : "TESTING TITLE", "description" : "TESTING DESCRIPTION", "employer" : "TESTING EMPLOYER", "location" : "TESTING LOCATION", "salary" : "TESTING SALARY", "first_name": "FIRST_NAME", "last_name": "LAST_NAME"},
         {"title" : "TESTING TITLE123", "description" : "TESTING DESCRIPTION123", "employer" : "TESTING EMPLOYER123", "location" : "TESTING LOCATION123", "salary" : "TESTING SALARY123", "first_name": "FIRST_NAME123", "last_name": "LAST_NAME123"}
     ]
-    test_filename = "test_jobs.csv"
+    test_filename = "tests/test_jobs.csv"
 
     util.file_job_save(test_jobs_save, test_filename)
 
@@ -38,29 +36,21 @@ def test_file_job_save():
 
 # Test database_check function
 def test_database_check():
-    test1_users_full = {}
-    test_users_not_full = {}
-    auth.file_read(test1_users_full, "test1.csv")
-    auth.file_read(test_users_not_full, "test.csv")
-
-    assert auth.database_check(test1_users_full) == True
-    assert auth.database_check(test_users_not_full) == False
+    test1_users_full = {"user1", "user2", "user3", "user4", "user5", "user6"}
+    test_users_not_full = {"user1", "user2", "user3", "user4", "user5"}
+    
+    assert util.database_check(test1_users_full) == True
+    assert util.database_check(test_users_not_full) == False
 
 # Test file read function
 def test_file_read():
-    test1_users_full_file_read = {}
-    test_users_not_full_file_read = {}
-    auth.file_read(test1_users_full_file_read, "test1.csv")
-    auth.file_read(test_users_not_full_file_read, "test.csv")
+    test_users_file_read = {}
+    test_filename = "tests/test_database.csv"
+    util.file_read(test_users_file_read, test_filename)
 
-    # See if the read was successful for test1.csv
-    assert "User1" in test1_users_full_file_read
-    assert "User2" in test1_users_full_file_read
-    assert "User3" in test1_users_full_file_read
-
-    # See if the read was successful for test.csv
-    assert "User1" in test_users_not_full_file_read
-    assert "User2" in test_users_not_full_file_read
+    # See if the read was successful 
+    assert "User1" in test_users_file_read
+    assert "User2" in test_users_file_read
 
 # Test file job read function
 def test_file_job_read():
@@ -72,7 +62,7 @@ def test_file_job_read():
         {"title" : "TESTING TITL", "description" : "TESTING DESCRPTION", "employer" : "TESTING EMPLOER", "location" : "TESTING LOCION", "salary" : "TESTING SRY", "first_name": "FIRST_adNAmE", "last_name": "LASsssT_NaAAMeME"},
         {"title" : "TESTING TITLE123", "description" : "TESTNG DESCRIPTIO23", "employer" : "TESTING EMPLOYER123", "location" : "TESTNG LO09ATION123", "salary" : "TESTING SALARY123", "first_name": "FIRST__NAME", "last_name": "LASt___NAME"}
     ]
-    test_filename = "test_jobs.csv"
+    test_filename = "tests/test_jobs.csv"
 
     test_jobs_read = []
 
