@@ -331,9 +331,9 @@ Last updated: 6/19/2023
                         with open("data/database.csv", "w") as file:
                             for line in new_lines:
                                 file.write(line)
-                        print("Preference Saved.")
+                        print("\nPreference Saved.")
                 else:
-                    print("Please sign in to use this feature.")
+                    print("\nPlease sign in to use this feature.")
             #return to previous menu otherwise
         #Cookie Policy
         elif choice == '6':
@@ -463,11 +463,13 @@ Last updated: 6/19/2023""")
                 print("***(2) SPANISH ***")
                 print("***(3) RETURN ***")
                 choice = input("Please select one of these languages(press 1-2): ")
-                if choice in ['1','2']:
+                if choice == '3':
+                    break
+                if choice in ['1','2', '3']:
                     if state == "not_logged_in":
                         while True:
                             print("\nYou must have an account to change language")
-                            print("\n***(1) LOGG IN ***")
+                            print("\n***(1) LOG IN ***")
                             print("***(2) REGISTER ***")
                             print("***(3) RETURN ***")
                             choice = input("Would you like to login or register a new account (press 1-2): ")
@@ -475,11 +477,9 @@ Last updated: 6/19/2023""")
                                 return "logging_in"
                             elif choice == '2':
                                 return "registering"
-                            elif choice == '3':
-                                break
                             else:
                                 print("Can you try again?")
-                        break
+                        
                     elif state == "logged_in":
                         if language == "English" and choice == '1':
                             print("\nEnglish is already chosen, please choose other option")
@@ -512,12 +512,8 @@ Last updated: 6/19/2023""")
                                     file.write(line)
                             language = "English"
                             break
-                        elif choice == '3':
-                            break
                         else:
                             print("Please try again")
-                elif choice == '3':
-                    break
         elif choice == '10':
             return "menu"
         else:

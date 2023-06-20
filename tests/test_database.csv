@@ -1,2 +1,2 @@
-User1,b'$2b$12$eu0QF0jjMuXu6.BWDrhEcuw5K.hEoIf2xBcVtM5tZHh1/phQ49LKK',User1FirstName,User1LastName,English
-User2,b'$2b$12$VRuH4TQxwba/DLUGhA3AJuR2zgoobVp7mUYWWMZQIMokU2QnCJpie',User2FirstName,User2LastName,Spanish
+User1,b'$2b$12$FElE8dxqYsMsnLy4ovNoS./PvfjReSgOQ78m7kPxxjcb7v7sri6Bq',User1FirstName,User1LastName,English,False,False,True
+User2,b'$2b$12$AB1MAXUH.T2QCy6.gBJADuH1OVPYqoF3HSAcguGRIlEGl8psOzjh6',User2FirstName,User2LastName,Spanish,False,False,True
