@@ -6,8 +6,8 @@ from selection import selection_menu as select
 from util import util as util
 
 def main():
-    users = {} # {username: [password, first_name, last_name, language]}
-    user = [] # [username, first_name, last_name, language]
+    users = {} # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]}
+    user = [] # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]
 
     states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4, "connect": 5, "useful_links" : 6, "important_links" : 7} # Add more states as needed
     state = states["start_menu"] # Current state
@@ -116,7 +116,7 @@ def main():
             if is_valid_login:
                 state = states["logged_in"] # set the state to logged_in
                 print("\nYou have succesfully logged in.")
-                user = [username, users[username][1], users[username][2], users[username][3]]
+                user = [username, users[username][1], users[username][2], users[username][3], users[username][4], users[username][5], users[username][6]]
                 
         # User Register
         elif (state == states["register"]):

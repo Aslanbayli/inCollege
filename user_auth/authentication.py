@@ -15,6 +15,10 @@ def register(users, username, password, first_name, last_name):
     salt = bcrypt.gensalt() # generate a salt
     password_hash = bcrypt.hashpw(password_bytes, salt) # hash the password 
     language = "English"
-    users[username] = [password_hash, first_name, last_name, language]
-    user = [username, first_name, last_name, language]
+    email_bool = True
+    sms_bool = True
+    targeted_ads_bool = True
+    
+    users[username] = [password_hash, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]
+    user = [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]
     return user
