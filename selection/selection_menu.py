@@ -120,7 +120,7 @@ def useful_links(state):
             
 def important_links(state, user=''):
     if state == "not_logged_in":
-        pass
+        language = "English"
     else:
         language = user[3]
     while True:
@@ -296,17 +296,49 @@ Last updated: 6/19/2023
             privacy_choice = input("Please select one of these options (press 1-2): ")
             if privacy_choice == '1':
                 print("\n****** GUEST CONTROLS ******")
-                print("***(1) DISABLE inCollege EMAIL ***")
-                print("***(2) DISABLE SMS ***")
-                print("***(3) DISABLE TARGETED ADVERTISING ***")
+                print("***(1) DISABLE/ENABLE inCollege EMAIL ***")
+                print("***(2) DISABLE/ENABLE SMS ***")
+                print("***(3) DISABLE/ENABLE TARGETED ADVERTISING ***")
                 guest_control_choice = input("Please select one of these options (press 1-3): ")
-                if guest_control_choice in ['1','2','3']:
-                    print("\nUnder Construction")
+                if user != '':
+                    if guest_control_choice in ['1','2','3']:
+                        with open("data/database.csv", "r") as file:
+                            lines = file.readlines()
+                            new_lines = []
+                            for line in lines:
+                                if line.count(',') == 7:
+                                    username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
+                                    if username == user[0]:
+                                        if guest_control_choice == '1':
+                                            if bool(email_bool) == True:
+                                                email_bool = False
+                                            else:
+                                                email_bool = True
+                                        elif guest_control_choice == '2':
+                                            if bool(sms_bool) == True:
+                                                sms_bool = False
+                                            else:
+                                                sms_bool = True
+                                        elif guest_control_choice == '3':
+                                            if bool(targeted_ads_bool) == True:
+                                                targeted_ads_bool = False
+                                            else:
+                                                targeted_ads_bool = True
+                                    line = ','.join([username, passwd, f_name, l_name, language, str(email_bool), str(sms_bool), str(targeted_ads_bool)]) + '\n'
+                                    new_lines.append(line)
+                                else:
+                                    break
+                        with open("data/database.csv", "w") as file:
+                            for line in new_lines:
+                                file.write(line)
+                        print("Preference Saved.")
+                else:
+                    print("Please sign in to use this feature.")
             #return to previous menu otherwise
         #Cookie Policy
         elif choice == '6':
             print("\n****** COOKIE POLICY ******")
-            print(print("""
+            print("""
 This Cookie Policy explains how InCollege ("we" or "us") uses cookies and similar technologies when you access or use our
 website, mobile application, or any related services (collectively, the "Services").
 By using the Services, you consent to the use of cookies and similar technologies as described in this policy.
@@ -343,7 +375,7 @@ We encourage you to review this policy periodically to stay informed about our u
 6. Contact Us
 If you have any questions or concerns about our use of cookies or this Cookie Policy, please contact us at <inCollege Email>
 Last updated: 6/19/2023
-"""))
+""")
         #Copyright Policy
         elif choice == '7':
             print("\n****** COPYRIGHT POLICY ******")
@@ -426,10 +458,7 @@ Last updated: 6/19/2023""")
         elif choice == '9':
             while True:
                 print("\n****** LANGUAGES ******")
-                if state == "not_logged_in":
-                    pass
-                else:
-                    print(f"The current language is {language}, What do you want to change it to? ")
+                print(f"The current language is {language}, What do you want to change it to? ")
                 print("***(1) ENGLISH ***")
                 print("***(2) SPANISH ***")
                 print("***(3) RETURN ***")
@@ -463,10 +492,10 @@ Last updated: 6/19/2023""")
 
                             with open("data/database.csv", "w") as file:
                                 for line in lines:
-                                    if line.count(',') == 4:
-                                        username, passwd, f_name, l_name, current_language = line.strip().split(',')
+                                    if line.count(',') == 7:
+                                        username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
                                         current_language = "Spanish"
-                                        line = ','.join([username, passwd, f_name, l_name, current_language]) + '\n'
+                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
                                     file.write(line)
                             language = "Spanish"
                             break
@@ -476,10 +505,10 @@ Last updated: 6/19/2023""")
 
                             with open("data/database.csv", "w") as file:
                                 for line in lines:
-                                    if line.count(',') == 4:
-                                        username, passwd, f_name, l_name, current_language = line.strip().split(',')
+                                    if line.count(',') == 7:
+                                        username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
                                         current_language = "English"
-                                        line = ','.join([username, passwd, f_name, l_name, current_language]) + '\n'
+                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
                                     file.write(line)
                             language = "English"
                             break
