@@ -39,7 +39,7 @@ def file_read(users, filename="data/database.csv"):
                 username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
                 passwd = passwd[2:-1]
                 passwd = passwd.encode("utf-8")
-                users[username] = [passwd, f_name, l_name, language]
+                users[username] = [passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool]
             else:
                 continue
 

@@ -304,34 +304,36 @@ Last updated: 6/19/2023
                     if guest_control_choice in ['1','2','3']:
                         with open("data/database.csv", "r") as file:
                             lines = file.readlines()
+                            new_lines = []
                             for line in lines:
                                 if line.count(',') == 7:
                                     username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
                                     if username == user[0]:
                                         if guest_control_choice == '1':
-                                            if email_bool == True:
+                                            if bool(email_bool) == True:
                                                 email_bool = False
                                             else:
                                                 email_bool = True
                                         elif guest_control_choice == '2':
-                                            if sms_bool == True:
+                                            if bool(sms_bool) == True:
                                                 sms_bool = False
                                             else:
                                                 sms_bool = True
                                         elif guest_control_choice == '3':
-                                            if targeted_ads_bool == True:
+                                            if bool(targeted_ads_bool) == True:
                                                 targeted_ads_bool = False
                                             else:
                                                 targeted_ads_bool = True
-                                        break
-                            lines = file.readlines()
+                                    line = ','.join([username, passwd, f_name, l_name, language, str(email_bool), str(sms_bool), str(targeted_ads_bool)]) + '\n'
+                                    new_lines.append(line)
+                                else:
+                                    break
                         with open("data/database.csv", "w") as file:
-                            for line in lines:
-                                if line.count(',') == 7:
-                                    username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
-                                    line = ','.join([username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
+                            for line in new_lines:
                                 file.write(line)
                         print("Preference Saved.")
+                else:
+                    print("Please sign in to use this feature.")
             #return to previous menu otherwise
         #Cookie Policy
         elif choice == '6':
@@ -492,7 +494,7 @@ Last updated: 6/19/2023""")
                                     if line.count(',') == 7:
                                         username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
                                         current_language = "Spanish"
-                                        line = ','.join([username, passwd, f_name, l_name, current_language]) + '\n'
+                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
                                     file.write(line)
                             language = "Spanish"
                             break
@@ -505,7 +507,7 @@ Last updated: 6/19/2023""")
                                     if line.count(',') == 7:
                                         username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
                                         current_language = "English"
-                                        line = ','.join([username, passwd, f_name, l_name, current_language]) + '\n'
+                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
                                     file.write(line)
                             language = "English"
                             break
