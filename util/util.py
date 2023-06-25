@@ -9,7 +9,15 @@ def file_save(users, filename="data/database.csv"):
             email_bool = users[username][4]
             sms_bool = users[username][5]
             targeted_ads_bool = users[username][6]
-            file.write(f"{username},{passwd},{f_name},{l_name},{language},{email_bool},{sms_bool},{targeted_ads_bool}\n")
+            college = users[username][7]
+            major = users[username][8]
+            friends = users[username][9:]
+            friends_str = ",".join(friends)
+            line = f"{username},{passwd},{f_name},{l_name},{language},{email_bool},{sms_bool},{targeted_ads_bool},{college},{major}"
+            if friends:
+                line += f",{friends_str}"
+            line += "\n"
+            file.write(line)
             
 def file_job_save(jobs, filename = "data/jobs.csv"):
     with open(filename, 'w') as file:
@@ -25,7 +33,7 @@ def file_job_save(jobs, filename = "data/jobs.csv"):
             
 # Check if the database is full
 def database_check(users):
-    if (len(users) > 5):
+    if (len(users) > 10):
         return True
     else:
         return False
@@ -35,11 +43,28 @@ def file_read(users, filename="data/database.csv"):
     with open(filename, "r") as file:
         file.seek(0)
         for line in file:
-            if line.count(',') == 7:
-                username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
-                passwd = passwd[2:-1]
-                passwd = passwd.encode("utf-8")
-                users[username] = [passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool]
+            data = line.strip().split(',')
+            if len(data) >= 7:
+                username = data[0]
+                passwd = data[1][2:-1].encode("utf-8")
+                f_name = data[2]
+                l_name = data[3]
+                language = data[4]
+                email_bool = data[5]
+                sms_bool = data[6]
+                targeted_ads_bool = data[7]
+                university = data[8]
+                major = data[9]
+                
+                # Additional data (if available)
+                additional_data = data[10:]
+
+
+                if username in users:
+                    users[username] += additional_data
+                else:
+                    users[username] = [passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data
+
             else:
                 continue
 

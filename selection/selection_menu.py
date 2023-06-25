@@ -3,7 +3,7 @@ from user_auth import validator as valid
 from util import util as util
 
 
-def selection_menu_options(user): # user is an array of username, firstname, lastname, language
+def selection_menu_options(user, friend_list): # user is an array of username, firstname, lastname, language
     while True:
         print("\n****** SELECTION MENU ******")
         print("***(1) SEARCH FOR A JOB***")
@@ -11,10 +11,11 @@ def selection_menu_options(user): # user is an array of username, firstname, las
         print("***(3) LEARN A NEW SKILL***")
         print("***(4) USEFUL LINKS***")
         print("***(5) IMPORTANT LINKS***")
-        print("***(6) LOG OUT***")
+        print("***(6) SHOW MY NETWORK***")
+        print("***(7) LOG OUT***")
         
         choice = input("Please select which option you would like to do (e.x. \"1\"): ")
-        if choice in ['1', '2', '3', '4', '5', '6']:
+        if choice in ['1', '2', '3', '4', '5', '6', '7']:
             if choice == '1':
                 job_search(user)
             elif choice == '2':
@@ -26,10 +27,94 @@ def selection_menu_options(user): # user is an array of username, firstname, las
             elif choice == '5':
                 important_links("logged_in", user)
             elif choice == '6':
+                show_network(friend_list, user)
+            elif choice == '7':
                 return
         else:
             print("\nInvalid option. Please try again.")
 
+def show_network(friend_list, user):
+    while True:
+        print("*** This is your friend list ***")
+        if (len(friend_list) == 0):
+            print("None")
+        else:
+            for friend in friend_list:
+                print(f'{friend}')
+        print("\n***(1) DISCONNECTING FRIEND ***")
+        print("***(2) RETURN ***")
+
+        choice = input("Please select which option you would like to do: ")
+        
+
+        if choice == '1':
+            removal_friend = input("Please type the username of the person you want to remove: ")
+            with open("data/database.csv", "r") as file:
+                lines = file.readlines()
+
+            with open("data/database.csv", "w") as file:
+                for line in lines:
+                    remove = 0
+                    isnt_friend = 0
+                    with open("data/database.csv", "w") as file:
+                        for line in lines:
+                            data = line.strip().split(',')
+                            if data[0] == user[0]:
+                                username = data[0]
+                                current_user = data[0]
+                                passwd = data[1]
+                                f_name = data[2]
+                                l_name = data[3]
+                                current_language = data[4]
+                                email_bool = data[5]
+                                sms_bool = data[6]
+                                targeted_ads_bool = data[7]
+                                university = data[8]
+                                major = data[9]
+                                        
+                                # Additional data (if available)
+                                additional_data = data[10:]
+                                if removal_friend in additional_data:
+                                    additional_data.remove(removal_friend)
+                                    remove = 1
+                                    if removal_friend in friend_list:
+                                        friend_list.remove(removal_friend)
+                                    else:
+                                        print("error")
+                                else:
+                                    isnt_friend = 1
+                                line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                                
+                                
+                                
+                            if data[0] == removal_friend and remove == 1:
+                                username = data[0]
+                                passwd = data[1]
+                                f_name = data[2]
+                                l_name = data[3]
+                                current_language = data[4]
+                                email_bool = data[5]
+                                sms_bool = data[6]
+                                targeted_ads_bool = data[7]
+                                university = data[8]
+                                major = data[9]
+                                        
+                                # Additional data (if available)
+                                additional_data = data[10:]
+                                if current_user in additional_data:
+                                    additional_data.remove(current_user)
+                                line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                            file.write(line)  
+                if isnt_friend == 1:
+                    print("This friend is not in the list, please try again\n")
+                else:
+                    print("We have successfully removed the user, please select what you want to do next")
+        elif choice == '2':
+            return
+        else:
+            print("Please try again")
+        
+    
 def job_search(user): #User is an array of username, firstname, lastname
     jobs = []
     util.file_job_read(jobs)
@@ -493,10 +578,23 @@ Last updated: 6/19/2023""")
 
                             with open("data/database.csv", "w") as file:
                                 for line in lines:
-                                    if line.count(',') == 7:
-                                        username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
+                                    data = line.strip().split(',')
+                                    if data[0] == user[0]:
+                                        username = data[0]
+                                        passwd = data[1]
+                                        f_name = data[2]
+                                        l_name = data[3]
                                         current_language = "Spanish"
-                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
+                                        email_bool = data[5]
+                                        sms_bool = data[6]
+                                        targeted_ads_bool = data[7]
+                                        university = data[8]
+                                        major = data[9]
+                                        
+                                        # Additional data (if available)
+                                        additional_data = data[10:]
+                        
+                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
                                     file.write(line)
                             language = "Spanish"
                             print("Your language has been changed to Spanish")
@@ -507,10 +605,23 @@ Last updated: 6/19/2023""")
 
                             with open("data/database.csv", "w") as file:
                                 for line in lines:
-                                    if line.count(',') == 7:
-                                        username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool = line.strip().split(',')
+                                    data = line.strip().split(',')
+                                    if data[0] == user[0]:
+                                        username = data[0]
+                                        passwd = data[1]
+                                        f_name = data[2]
+                                        l_name = data[3]
                                         current_language = "English"
-                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool]) + '\n'
+                                        email_bool = data[5]
+                                        sms_bool = data[6]
+                                        targeted_ads_bool = data[7]
+                                        university = data[8]
+                                        major = data[9]
+                                        
+                                        # Additional data (if available)
+                                        additional_data = data[10:]
+                                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                                    
                                     file.write(line)
                             language = "English"
                             print("Your language has been changed to English")

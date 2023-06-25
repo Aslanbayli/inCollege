@@ -10,7 +10,7 @@ def login(users, username, password):
     return False
 
 # Register a new user
-def register(users, username, password, first_name, last_name):
+def register(users, username, password, first_name, last_name, college, major):
     password_bytes = password.encode("utf-8") # convert to byte string 
     salt = bcrypt.gensalt(rounds=12) # generate a salt
     password_hash = bcrypt.hashpw(password_bytes, salt) # hash the password 
@@ -19,6 +19,6 @@ def register(users, username, password, first_name, last_name):
     sms_bool = True
     targeted_ads_bool = True
     
-    users[username] = [password_hash, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]
-    user = [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]
+    users[username] = [password_hash, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, college, major]
+    user = [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, college, major]
     return user

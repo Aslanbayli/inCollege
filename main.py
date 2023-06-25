@@ -7,12 +7,13 @@ from util import util as util
 
 def main():
     users = {} # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]}
-    user = [] # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool]
+    user = [] # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, friend]
 
     states = {"start_menu": 0, "promotional_video": 1, "logging_in": 2, "register": 3, "logged_in": 4, "connect": 5, "useful_links" : 6, "important_links" : 7} # Add more states as needed
     state = states["start_menu"] # Current state
 
     util.file_read(users) # Load the data from file into the dictionary for faster access
+    
 
     while state in states.values():
         # User Prompt Messages
@@ -175,15 +176,18 @@ def main():
 
             first_name = input("First Name: ")
             last_name = input("Last Name: ")
+            college = input("College: ")
+            major = input("Major: ")
 
-            user = auth.register(users, username, password, first_name, last_name) # User is an array of username, firstname, lastname
+            user = auth.register(users, username, password, first_name, last_name, college, major) # User is an array of username, firstname, lastname
             util.file_save(users)
             state = states["logged_in"] # set the state to logged_in
             print("\nYou have succesfully created an account.")
 
         # User Logged In
         elif (state == states["logged_in"]):
-            select.selection_menu_options(user)
+            friend_list = users[username][9:]
+            select.selection_menu_options(user, friend_list)
             state = states["start_menu"]
 
         # State not in states. Sending back to start menu
