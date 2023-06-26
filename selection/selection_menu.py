@@ -41,7 +41,7 @@ def show_network(friend_list, user):
         else:
             for friend in friend_list:
                 print(f'{friend}')
-        print("\n***(1) DISCONNECTING FRIEND ***")
+        print("\n***(1) REMOVING FRIEND ***")
         print("***(2) RETURN ***")
 
         choice = input("Please select which option you would like to do: ")
@@ -51,68 +51,67 @@ def show_network(friend_list, user):
             removal_friend = input("Please type the username of the person you want to remove: ")
             with open("data/database.csv", "r") as file:
                 lines = file.readlines()
-
+            remove = 0
+            isnt_friend = 0
+        
+                    
             with open("data/database.csv", "w") as file:
                 for line in lines:
-                    remove = 0
-                    isnt_friend = 0
-                    with open("data/database.csv", "w") as file:
-                        for line in lines:
-                            data = line.strip().split(',')
-                            if data[0] == user[0]:
-                                username = data[0]
-                                current_user = data[0]
-                                passwd = data[1]
-                                f_name = data[2]
-                                l_name = data[3]
-                                current_language = data[4]
-                                email_bool = data[5]
-                                sms_bool = data[6]
-                                targeted_ads_bool = data[7]
-                                university = data[8]
-                                major = data[9]
+                    data = line.strip().split(',')
+                    if data[0] == user[0]:
+                        username = data[0]
+                        current_user = data[0]
+                        passwd = data[1]
+                        f_name = data[2]
+                        l_name = data[3]
+                        current_language = data[4]
+                        email_bool = data[5]
+                        sms_bool = data[6]
+                        targeted_ads_bool = data[7]
+                        university = data[8]
+                        major = data[9]
                                         
-                                # Additional data (if available)
-                                additional_data = data[10:]
-                                if removal_friend in additional_data:
-                                    additional_data.remove(removal_friend)
-                                    remove = 1
-                                    if removal_friend in friend_list:
-                                        friend_list.remove(removal_friend)
-                                    else:
-                                        print("error")
-                                else:
-                                    isnt_friend = 1
-                                line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                        # Additional data (if available)
+                        additional_data = data[10:]
+                        if removal_friend in additional_data:
+                            additional_data.remove(removal_friend)
+                            remove = 1
+                            if removal_friend in friend_list:
+                                friend_list.remove(removal_friend)
+                            else:
+                                print("error")
+                        else:
+                            isnt_friend = 1
+                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
                                 
                                 
                                 
-                            if data[0] == removal_friend and remove == 1:
-                                username = data[0]
-                                passwd = data[1]
-                                f_name = data[2]
-                                l_name = data[3]
-                                current_language = data[4]
-                                email_bool = data[5]
-                                sms_bool = data[6]
-                                targeted_ads_bool = data[7]
-                                university = data[8]
-                                major = data[9]
-                                        
-                                # Additional data (if available)
-                                additional_data = data[10:]
-                                if current_user in additional_data:
-                                    additional_data.remove(current_user)
-                                line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
-                            file.write(line)  
+                    if data[0] == removal_friend and remove == 1:
+                        username = data[0]
+                        passwd = data[1]
+                        f_name = data[2]
+                        l_name = data[3]
+                        current_language = data[4]
+                        email_bool = data[5]
+                        sms_bool = data[6]
+                        targeted_ads_bool = data[7]
+                        university = data[8]
+                        major = data[9]
+                                    
+                        # Additional data (if available)
+                        additional_data = data[10:]
+                        if current_user in additional_data:
+                            additional_data.remove(current_user)
+                        line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                    file.write(line)  
                 if isnt_friend == 1:
-                    print("This friend is not in the list, please try again\n")
+                    print("\nThis friend is not in the list, please try again\n")
                 else:
-                    print("We have successfully removed the user, please select what you want to do next")
+                    print("\nWe have successfully removed the user, please select what you want to do next\n")
         elif choice == '2':
             return
         else:
-            print("Please try again")
+            print("\nPlease try again\n")
         
     
 def job_search(user): #User is an array of username, firstname, lastname
