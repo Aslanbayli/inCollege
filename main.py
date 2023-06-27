@@ -214,9 +214,11 @@ def main():
 
             first_name = input("First Name: ")
             last_name = input("Last Name: ")
+            college = input("College: ")
+            major = input("Major: ")
 
             user = auth.register(
-                users, username, password, first_name, last_name
+                users, username, password, first_name, last_name, college, major
             )
             util.file_save(users)
             state = States.LOGGED_IN
@@ -224,7 +226,8 @@ def main():
 
         # User Logged In
         elif state == States.LOGGED_IN:
-            select.selection_menu_options(user)
+            friend_list = users[username][9:]
+            select.selection_menu_options(user, friend_list)
             state = States.START_MENU
 
         # Search Students
@@ -275,7 +278,7 @@ def main():
         # Pending Friend Requests
         elif state == States.PENDING_REQUESTS:
             print("\nPending Friend Requests:")
-            pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
+            # pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
             if len(pending_requests) == 0:
                 print("You have no pending friend requests.")
             else:
