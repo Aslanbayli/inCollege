@@ -25,6 +25,7 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
                 job_search(user)
             elif choice == '2':
                 find_friend(users, user)
+
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
