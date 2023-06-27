@@ -261,8 +261,11 @@ def main():
                         if send_request_index >= 0 and send_request_index < len(found_students):
                             selected_student = found_students[send_request_index]
                             recipient_username = users[selected_student[0]][0]
-                            users[user[0]][9].append(recipient_username)  # Add the friend request to current user's friend requests
-                            print(f"\nFriend request sent to {selected_student[1]} {selected_student[2]} ({selected_student[0]}).")
+                            if user:
+                                users[user[0]][9].append(recipient_username)  # Add the friend request to current user's friend requests
+                                print(f"\nFriend request sent to {selected_student[1]} {selected_student[2]} ({selected_student[0]}).")
+                            else:
+                                print("\nSign in to send friend requests.")
                         else:
                             print("\nInvalid option. Please try again.")
                     except ValueError:
@@ -274,13 +277,23 @@ def main():
 
         # Pending Friend Requests
         elif state == States.PENDING_REQUESTS:
+
+            if not user:
+                print("\nSign in to view pending friend requests.")
+                state = States.START_MENU
+
             print("\nPending Friend Requests:")
-            # pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
-            if len(pending_requests) == 0:
+            pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
+            elif len(pending_requests) == 0:
                 print("You have no pending friend requests.")
             else:
-                for request in pending_requests:
-                    print(f"- {request}")
+                print("\nPending Friend Requests:")
+                pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
+                if len(pending_requests) == 0:
+                    print("You have no pending friend requests.")
+                else:
+                    for request in pending_requests:
+                        print(f"- {request}")
 
             input("\nPress Enter to return to the main menu...")
             state = States.START_MENU
