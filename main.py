@@ -1,9 +1,11 @@
 import time
 from enum import Enum
-from util import util as util
+
 from user_auth import authentication as auth
 from user_auth import validator as valid
 from selection import selection_menu as select
+from util import util as util
+
 
 class States(Enum):
     START_MENU = 0
@@ -14,9 +16,8 @@ class States(Enum):
     CONNECT = 5
     USEFUL_LINKS = 6
     IMPORTANT_LINKS = 7
-    SEARCH_STUDENTS = 8
-    PENDING_REQUESTS = 9
-    EXIT = 10
+    EXIT = 8
+
 
 def main():
     users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests]]}
@@ -31,30 +32,26 @@ def main():
         # User Prompt Messages
         if state == States.START_MENU:
             user_auth = input(
-                "\n(w)atch promotional video | (f)ind people you might know | (s)earch students | (u)seful link | InCollege (i)mportant links | (l)ogin | (r)egister | (p)ending friend requests | (e)xit: "
+                "\n(w)atch promotional video | (f)ind people you might know | (u)seful link | InCollege (i)mportant links | (l)ogin | (r)egister | (e)xit: "
             )
-            user_auth = user_auth.lower()
-            if user_auth == "w":
-                state = States.PROMOTIONAL_VIDEO
-            elif user_auth == "f":
-                state = States.CONNECT
-            elif user_auth == "s":
-                state = States.SEARCH_STUDENTS
-            elif user_auth == "l":
-                state = States.LOGGING_IN
-            elif user_auth == "r":
-                state = States.REGISTER
-            elif user_auth == "i":
-                state = States.IMPORTANT_LINKS
-            elif user_auth == "u":
-                state = States.USEFUL_LINKS
-            elif user_auth == "p":
-                state = States.PENDING_REQUESTS
-            elif user_auth == "e":
-                print("\nThank you for visiting!")
-                state = States.EXIT
-            else:
-                print("\nInvalid option. Please try again.")
+            match user_auth.lower():
+                case "w":
+                    state = States.PROMOTIONAL_VIDEO
+                case "f":
+                    state = States.CONNECT
+                case "u":
+                    state = States.USEFUL_LINKS
+                case "i":
+                    state = States.IMPORTANT_LINKS
+                case "l":
+                    state = States.LOGGING_IN
+                case "r":
+                    state = States.REGISTER
+                case "e":
+                    print("\nThank you for visiting!")
+                    state = States.EXIT
+                case _:
+                    print("\nInvalid option. Please try again.")
 
         # Promotional Video
         elif state == States.PROMOTIONAL_VIDEO:
@@ -72,13 +69,11 @@ def main():
                 print("\nThey are a part of the InCollege system.")
 
                 user_auth = input(
-                    "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: "
-                )
+                    "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: ")
                 while not valid.validate_input_lrm(user_auth):
                     print("\nInvalid option. Please try again.")
                     user_auth = input(
-                        "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: "
-                    )
+                        "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: ")
 
                 if user_auth.lower() == "l":
                     state = States.LOGGING_IN
@@ -227,76 +222,50 @@ def main():
             select.selection_menu_options(user, friend_list, request_list, users)
             state = States.START_MENU
 
-        # Search Students
-        elif state == States.SEARCH_STUDENTS:
-            print("\nSearch for other students:")
-            search_option = input(
-                "Search by (l)ast name, (u)niversity, or (m)ajor: "
-            ).lower()
+        # # Search Students
+        # elif state == States.SEARCH_STUDENTS:
+        #     print("\nSearch for other students:")
+        #     search_option = input(
+        #         "Search by (l)ast name, (u)niversity, or (m)ajor: "
+        #     ).lower()
 
-            if search_option == "l":
-                search_criteria = "last name"
-            elif search_option == "u":
-                search_criteria = "university"
-            elif search_option == "m":
-                search_criteria = "major"
-            else:
-                print("\nInvalid option. Please try again.")
-                state = States.START_MENU
-                continue
+        #     if search_option == "l":
+        #         search_criteria = "last name"
+        #     elif search_option == "u":
+        #         search_criteria = "university"
+        #     elif search_option == "m":
+        #         search_criteria = "major"
+        #     else:
+        #         print("\nInvalid option. Please try again.")
+        #         continue
 
-            search_value = input("Enter the search value: ")
-            found_students = util.search_students(users, search_value, search_criteria)
-            if found_students:
-                print("\nStudents found:")
-                for index, student in enumerate(found_students):
-                    print(f"{index + 1}. {student[1]} {student[2]}")
+        #     search_value = input("Enter the search value: ")
+        #     found_students = util.search_students(users, search_value, search_criteria)
+        #     if found_students:
+        #         print("\nStudents found:")
+        #         for index, student in enumerate(found_students):
+        #             print(f"{index + 1}. {student[1]} {student[2]}")
 
-                send_request = input("Enter the number of the student to send a friend request (or 'c' to cancel): ")
-                if send_request.lower() == 'c':
-                    state = States.START_MENU
-                else:
-                    try:
-                        send_request_index = int(send_request) - 1
-                        if send_request_index >= 0 and send_request_index < len(found_students):
-                            selected_student = found_students[send_request_index]
-                            recipient_username = users[selected_student[0]][0]
-                            if user:
-                                users[user[0]][9].append(recipient_username)  # Add the friend request to current user's friend requests
-                                print(f"\nFriend request sent to {selected_student[1]} {selected_student[2]} ({selected_student[0]}).")
-                            else:
-                                print("\nSign in to send friend requests.")
-                        else:
-                            print("\nInvalid option. Please try again.")
-                    except ValueError:
-                        print("\nInvalid option. Please try again.")
-            else:
-                print("\nNo students found with the given search criteria.")
+        #         send_request = input("Enter the number of the student to send a friend request (or 'c' to cancel): ")
+        #         if send_request.lower() == 'c':
+        #             state = States.START_MENU
+        #         else:
+        #             try:
+        #                 send_request_index = int(send_request) - 1
+        #                 if send_request_index >= 0 and send_request_index < len(found_students):
+        #                     selected_student = found_students[send_request_index]
+        #                     recipient_username = users[selected_student[0]][0]
+        #                     users[user[0]][9].append(recipient_username)  # Add the friend request to current user's friend requests
+        #                     print(f"\nFriend request sent to {selected_student[1]} {selected_student[2]} ({selected_student[0]}).")
+        #                 else:
+        #                     print("\nInvalid option. Please try again.")
+        #             except ValueError:
+        #                 print("\nInvalid option. Please try again.")
+        #     else:
+        #         print("\nNo students found with the given search criteria.")
 
-            state = States.START_MENU
+        #     state = States.START_MENU
 
-        # Pending Friend Requests
-        elif state == States.PENDING_REQUESTS:
-
-            if not user:
-                print("\nSign in to view pending friend requests.")
-                state = States.START_MENU
-
-            print("\nPending Friend Requests:")
-            pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
-            elif len(pending_requests) == 0:
-                print("You have no pending friend requests.")
-            else:
-                print("\nPending Friend Requests:")
-                pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
-                if len(pending_requests) == 0:
-                    print("You have no pending friend requests.")
-                else:
-                    for request in pending_requests:
-                        print(f"- {request}")
-
-            input("\nPress Enter to return to the main menu...")
-            state = States.START_MENU
 
         else:
             state = States.START_MENU
@@ -306,7 +275,6 @@ if __name__ == "__main__":
     # Display the banner
     with open("assets/banner.txt", "r") as file:
         print(file.read())
-
     print("\n***** Welcome to inCollege app! *****")
     print("\n\nListen to an inspiring success story:")
     success_story = "\"I had problems gaining traction on LinkedIn. Through InCollege, I now have an internship at Raytheon!\""
