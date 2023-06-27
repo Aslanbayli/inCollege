@@ -1,6 +1,7 @@
 # Save the users dictionary to the database file
-def file_save(users, filename="data/database.csv"):
-    with open(filename, 'w') as file:
+def file_save(friend_request, users):
+    
+    with open("data/database.csv", 'w') as file:
         for username in users:
             passwd = str(users[username][0])
             f_name = users[username][1]
@@ -18,6 +19,17 @@ def file_save(users, filename="data/database.csv"):
                 line += f",{friends_str}"
             line += "\n"
             file.write(line)
+    
+    with open("data/request.csv", 'w') as file:
+        for username in friend_request:
+            request = friend_request[username][0:]
+            request_str = ",".join(request)
+            line = f"{username}"
+            if request:
+                line += f",{request_str}"
+            line += "\n"
+            file.write(line)
+
             
 def file_job_save(jobs, filename = "data/jobs.csv"):
     with open(filename, 'w') as file:
@@ -39,8 +51,8 @@ def database_check(users):
         return False
 
 # Read from the database file and populate the users dictionary
-def file_read(users, filename="data/database.csv"):
-    with open(filename, "r") as file:
+def file_read(users, friend_request):
+    with open("data/database.csv", "r") as file:
         file.seek(0)
         for line in file:
             data = line.strip().split(',')
@@ -64,6 +76,21 @@ def file_read(users, filename="data/database.csv"):
                     users[username] += additional_data
                 else:
                     users[username] = [passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data
+
+            else:
+                continue
+    with open("data/request.csv", "r") as file:
+        file.seek(0)
+        for line in file:
+            data = line.strip().split(',')
+            if len(data) >= 0:
+                username = data[0]
+                # Additional data (if available)
+                additional_data = data[1:]
+                if username in friend_request:
+                    friend_request[username] += additional_data
+                else:
+                    friend_request[username] =  additional_data
 
             else:
                 continue

@@ -3,8 +3,13 @@ from user_auth import validator as valid
 from util import util as util
 
 
-def selection_menu_options(user, friend_list): # user is an array of username, firstname, lastname, language
+def selection_menu_options(user, friend_list, request_list, users): # user is an array of username, firstname, lastname, language\
+    print(user)
     while True:
+
+        if len(request_list) > 0:
+            print("*** YOU HAVE NEW FRIEND REQUEST(S) ***")
+
         print("\n****** SELECTION MENU ******")
         print("***(1) SEARCH FOR A JOB***")
         print("***(2) FIND SOMEONE YOU KNOW***")
@@ -19,7 +24,7 @@ def selection_menu_options(user, friend_list): # user is an array of username, f
             if choice == '1':
                 job_search(user)
             elif choice == '2':
-                print("\nUnder construction, check back later....")
+                find_friend(users, user)
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
@@ -27,13 +32,78 @@ def selection_menu_options(user, friend_list): # user is an array of username, f
             elif choice == '5':
                 important_links("logged_in", user)
             elif choice == '6':
-                show_network(friend_list, user)
+                show_network(friend_list, user, users, request_list)
             elif choice == '7':
                 return
         else:
             print("\nInvalid option. Please try again.")
 
-def show_network(friend_list, user):
+def find_friend(users, current_user):
+    while True:
+        found = 0
+        print("\nSearch for other students:")
+        search_option = input(
+            "Search by (l)ast name, (u)niversity, (m)ajor or (r)eturn: "
+        ).lower()
+        matching_users = []
+        if search_option == "l":
+            type = input("Please type the last name: ")
+            for user in users:
+                if users[user][2] == type:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "u":
+            type = input("Please type the university: ")
+            for user in users:
+                if users[user][7] == type and user != current_user[0] :
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "m":
+            type = input("Please type the university: ")
+            for user in users:
+                if users[user][8] == type and user != current_user[0]:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "r":
+            return
+        else:
+            print("\nInvalid option. Please try again.")
+            continue
+
+        if found == 0:
+            print("Cannot find this person, please try again")
+        elif found == 1:
+            while True:
+                print("\nHere are the results:\n")
+                for friend in matching_users:
+                    print(f"{friend}")
+                print("\n***(1) ADD FRIEND ***")
+                print("***(2) RETURN ***")
+                choice = input("Please select which option you would like to do: ")
+
+                if choice == '1':
+                    add_friend = input("Please type the username of the person you want to add: ")
+                    add = 0
+                    with open("data/request.csv", "r") as file:
+                        lines = file.readlines()      
+                    with open("data/request.csv", "w") as file:
+                        for line in lines:
+                            data = line.strip().split(',')
+                            if data[0] == add_friend:
+                                add = 1
+                                username = data[0]
+                                # Additional data (if available)
+                                additional_data = data[1:]
+                                additional_data.append(current_user[0])
+                                line = ','.join([username] + additional_data) + '\n'
+                            file.write(line)
+                        if add == 1:
+                            print("Already sent the friend request")
+                        else:
+                            print("Please check if you type correctly or not")  
+                elif choice == '2':
+                    break       
+def show_network(friend_list, user, users, request_list):
     while True:
         print("*** This is your friend list ***")
         if (len(friend_list) == 0):
@@ -42,7 +112,8 @@ def show_network(friend_list, user):
             for friend in friend_list:
                 print(f'{friend}')
         print("\n***(1) REMOVING FRIEND ***")
-        print("***(2) RETURN ***")
+        print("***(2) PENDING REQUEST ***")
+        print("***(3) RETURN ***")
 
         choice = input("Please select which option you would like to do: ")
         
@@ -60,7 +131,6 @@ def show_network(friend_list, user):
                     data = line.strip().split(',')
                     if data[0] == user[0]:
                         username = data[0]
-                        current_user = data[0]
                         passwd = data[1]
                         f_name = data[2]
                         l_name = data[3]
@@ -86,7 +156,7 @@ def show_network(friend_list, user):
                                 
                                 
                                 
-                    if data[0] == removal_friend and remove == 1:
+                    if data[0] == removal_friend:
                         username = data[0]
                         passwd = data[1]
                         f_name = data[2]
@@ -100,8 +170,8 @@ def show_network(friend_list, user):
                                     
                         # Additional data (if available)
                         additional_data = data[10:]
-                        if current_user in additional_data:
-                            additional_data.remove(current_user)
+                        if user[0] in additional_data:
+                            additional_data.remove(user[0])
                         line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
                     file.write(line)  
                 if isnt_friend == 1:
@@ -109,6 +179,110 @@ def show_network(friend_list, user):
                 else:
                     print("\nWe have successfully removed the user, please select what you want to do next\n")
         elif choice == '2':
+            while True:
+                print("*** This is your friend pending list ***")
+                if (len(request_list) == 0):
+                    print("None")
+                else:
+                    for pending in request_list:
+                        print(f'{pending}')
+                print("\n***(1) ACCEPTING FRIEND REQUEST ***")
+                print("***(2) REJECTING FRIEND REQUEST ***")
+                print("***(3) RETURN ***")
+                user_input = input("Please select which option you would like to do: ")
+                if user_input == '1' and len(request_list) != 0:
+                    accepting_person = input("Please type the username of the person you'd like to add: ")
+                    with open("data/database.csv", "r") as file:
+                        lines = file.readlines()
+                    typo = 0
+                    with open("data/database.csv", "w") as file:
+                        for line in lines:
+                            data = line.strip().split(',')
+                            if data[0] == user[0]:
+                                username = data[0]
+                                current_user = data[0]
+                                passwd = data[1]
+                                f_name = data[2]
+                                l_name = data[3]
+                                current_language = data[4]
+                                email_bool = data[5]
+                                sms_bool = data[6]
+                                targeted_ads_bool = data[7]
+                                university = data[8]
+                                major = data[9]
+                                                
+                                # Additional data (if available)
+                                additional_data = data[10:]
+                                if accepting_person in request_list:
+                                    additional_data.append(accepting_person)
+                                    
+                                    request_list.remove(accepting_person)
+                                else:
+                                    typo = 1
+                                line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                                                   
+                                       
+                            if data[0] == accepting_person:
+                                username = data[0]
+                                passwd = data[1]
+                                f_name = data[2]
+                                l_name = data[3]
+                                current_language = data[4]
+                                email_bool = data[5]
+                                sms_bool = data[6]
+                                targeted_ads_bool = data[7]
+                                university = data[8]
+                                major = data[9]
+                                                    
+                                # Additional data (if available)
+                                additional_data = data[10:]
+                                if accepting_person not in additional_data:
+                                    additional_data.append(user[0])
+                                line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
+                                    
+                            file.write(line)  
+                        if typo == '1':
+                            print("Maybe there's a typo, can you try again")
+                        else:
+                            print("You have successfully add this friend")
+                            with open("data/request.csv", "r") as file:
+                                lines = file.readlines()
+                            with open("data/request.csv", "w") as file:
+                                for line in lines:
+                                    data = line.strip().split(',')
+                                    if data[0] == user[0]:
+                                        username = data[0]
+                                        additional_data = data[1:]
+                                        if accepting_person in additional_data:
+                                            additional_data.remove(accepting_person)
+                                        line = ','.join([username] + additional_data) + '\n'
+                                    file.write(line)
+                elif user_input == '2' and len(request_list) != 0: 
+                    removing_person = input("Please type the username of the person you'd like to remove: ")
+                    typo = 0
+                    with open("data/request.csv", "r") as file:
+                        lines = file.readlines()
+                    with open("data/request.csv", "w") as file:
+                        for line in lines:
+                            data = line.strip().split(',')
+                            if data[0] == user[0]:
+                                username = data[0]
+                                additional_data = data[1:]
+                                if removing_person in additional_data:
+                                    additional_data.remove(removing_person)
+                                    if removing_person in request_list:
+                                        request_list.remove(removing_person)
+                                else:
+                                    typo = 1
+                                line = ','.join([username] + additional_data) + '\n'
+                            file.write(line)
+                    if typo == 1:
+                       print("There may be a typo, can you try again")
+                    elif typo == 0:
+                        print("You have successfully removes this pending friend request")
+                elif user_input == '1' or user_input == '2' and  len(request_list) == 0:
+                    print("You don't have any pending friend request")            
+        elif choice == '3':
             return
         else:
             print("\nPlease try again\n")

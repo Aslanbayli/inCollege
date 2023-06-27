@@ -21,10 +21,11 @@ class States(Enum):
 def main():
     users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests]]}
     user = []  # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major]
+    friend_request = {}
 
     state = States.START_MENU  # Current state
 
-    util.file_read(users)  # Load the data from file into the dictionary for faster access
+    util.file_read(users, friend_request)  # Load the data from file into the dictionary for faster access
 
     while state != States.EXIT:
         # User Prompt Messages
@@ -139,10 +140,6 @@ def main():
                 print("\nYou have successfully logged in.")
 
                 # Check for pending friend requests
-                pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
-                if len(pending_requests) > 0:
-                    print(f"You have {len(pending_requests)} pending friend request(s).")
-                    print("You can view them in the 'Pending Friend Requests' section.")
 
                 user = [
                     username,
@@ -213,17 +210,21 @@ def main():
 
             first_name = input("First Name: ")
             last_name = input("Last Name: ")
+            college = input("College: ")
+            major = input("Major: ")
 
             user = auth.register(
-                users, username, password, first_name, last_name
+                friend_request, users, username, password, first_name, last_name, college, major
             )
-            util.file_save(users)
+            util.file_save(friend_request,users)
             state = States.LOGGED_IN
             print("\nYou have successfully created an account.")
 
         # User Logged In
         elif state == States.LOGGED_IN:
-            select.selection_menu_options(user)
+            friend_list = users[username][9:]
+            request_list = friend_request[username][0:]
+            select.selection_menu_options(user, friend_list, request_list, users)
             state = States.START_MENU
 
         # Search Students
@@ -276,8 +277,15 @@ def main():
 
         # Pending Friend Requests
         elif state == States.PENDING_REQUESTS:
+
             if not user:
                 print("\nSign in to view pending friend requests.")
+                state = States.START_MENU
+
+            print("\nPending Friend Requests:")
+            pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
+            elif len(pending_requests) == 0:
+                print("You have no pending friend requests.")
             else:
                 print("\nPending Friend Requests:")
                 pending_requests = users[user[0]][9]  # Get the list of friend requests for the current user
