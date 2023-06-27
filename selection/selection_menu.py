@@ -3,8 +3,13 @@ from user_auth import validator as valid
 from util import util as util
 
 
-def selection_menu_options(user, friend_list): # user is an array of username, firstname, lastname, language
+def selection_menu_options(user, friend_list, request_list, users): # user is an array of username, firstname, lastname, language\
+    print(user)
     while True:
+
+        if len(request_list) > 0:
+            print("*** YOU HAVE NEW FRIEND REQUEST(S) ***")
+
         print("\n****** SELECTION MENU ******")
         print("***(1) SEARCH FOR A JOB***")
         print("***(2) FIND SOMEONE YOU KNOW***")
@@ -19,7 +24,7 @@ def selection_menu_options(user, friend_list): # user is an array of username, f
             if choice == '1':
                 job_search(user)
             elif choice == '2':
-                print("\nUnder construction, check back later....")
+                find_friend(users, user)
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
@@ -33,6 +38,45 @@ def selection_menu_options(user, friend_list): # user is an array of username, f
         else:
             print("\nInvalid option. Please try again.")
 
+def find_friend(users, current_user):
+    while True:
+        found = 0
+        print("\nSearch for other students:")
+        search_option = input(
+            "Search by (l)ast name, (u)niversity, (m)ajor or (r)eturn: "
+        ).lower()
+        matching_users = []
+        if search_option == "l":
+            type = input("Please type the last name: ")
+            for user in users:
+                if users[user][2] == type:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "u":
+            type = input("Please type the university: ")
+            for user in users:
+                if users[user][7] == type and user != current_user[0] :
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "m":
+            type = input("Please type the university: ")
+            for user in users:
+                if users[user][8] == type and user != current_user[0]:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "r":
+            return
+        else:
+            print("\nInvalid option. Please try again.")
+            continue
+
+        if found == 0:
+            print("Cannot find this person, please try again")
+        elif found == 1:
+            print("\nHere are the results:\n")
+            for friend in matching_users:
+                print(f"{friend}")
+
 def show_network(friend_list, user):
     while True:
         print("*** This is your friend list ***")
@@ -42,7 +86,8 @@ def show_network(friend_list, user):
             for friend in friend_list:
                 print(f'{friend}')
         print("\n***(1) REMOVING FRIEND ***")
-        print("***(2) RETURN ***")
+        print("***(2) PENDING REQUEST ***")
+        print("***(3) RETURN ***")
 
         choice = input("Please select which option you would like to do: ")
         
@@ -109,6 +154,8 @@ def show_network(friend_list, user):
                 else:
                     print("\nWe have successfully removed the user, please select what you want to do next\n")
         elif choice == '2':
+            pass
+        elif choice == '3':
             return
         else:
             print("\nPlease try again\n")
