@@ -73,6 +73,8 @@ def find_friend(users, current_user):
         if found == 0:
             print("Cannot find this person, please try again")
         elif found == 1:
+            if current_user[0] in matching_users:
+                matching_users.remove(current_user[0])
             while True:
                 print("\nHere are the results:\n")
                 for friend in matching_users:
@@ -122,7 +124,6 @@ def show_network(friend_list, user, users, request_list):
             removal_friend = input("Please type the username of the person you want to remove: ")
             with open("data/database.csv", "r") as file:
                 lines = file.readlines()
-            remove = 0
             isnt_friend = 0
         
                     
@@ -145,7 +146,6 @@ def show_network(friend_list, user, users, request_list):
                         additional_data = data[10:]
                         if removal_friend in additional_data:
                             additional_data.remove(removal_friend)
-                            remove = 1
                             if removal_friend in friend_list:
                                 friend_list.remove(removal_friend)
                             else:
@@ -185,6 +185,7 @@ def show_network(friend_list, user, users, request_list):
                     print("None")
                 else:
                     for pending in request_list:
+
                         print(f'{pending}')
                 print("\n***(1) ACCEPTING FRIEND REQUEST ***")
                 print("***(2) REJECTING FRIEND REQUEST ***")
@@ -200,7 +201,6 @@ def show_network(friend_list, user, users, request_list):
                             data = line.strip().split(',')
                             if data[0] == user[0]:
                                 username = data[0]
-                                current_user = data[0]
                                 passwd = data[1]
                                 f_name = data[2]
                                 l_name = data[3]
@@ -281,7 +281,9 @@ def show_network(friend_list, user, users, request_list):
                     elif typo == 0:
                         print("You have successfully removes this pending friend request")
                 elif user_input == '1' or user_input == '2' and  len(request_list) == 0:
-                    print("You don't have any pending friend request")            
+                    print("You don't have any pending friend request")       
+                elif user_input == '3':
+                    return     
         elif choice == '3':
             return
         else:
