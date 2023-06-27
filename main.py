@@ -1,11 +1,9 @@
 import time
 from enum import Enum
-
+from util import util as util
 from user_auth import authentication as auth
 from user_auth import validator as valid
 from selection import selection_menu as select
-from util import util as util
-
 
 class States(Enum):
     START_MENU = 0
@@ -19,7 +17,6 @@ class States(Enum):
     SEARCH_STUDENTS = 8
     PENDING_REQUESTS = 9
     EXIT = 10
-
 
 def main():
     users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests]]}
@@ -35,28 +32,28 @@ def main():
             user_auth = input(
                 "\n(w)atch promotional video | (f)ind people you might know | (s)earch students | (u)seful link | InCollege (i)mportant links | (l)ogin | (r)egister | (p)ending friend requests | (e)xit: "
             )
-            match user_auth.lower():
-                case "w":
-                    state = States.PROMOTIONAL_VIDEO
-                case "f":
-                    state = States.CONNECT
-                case "s":
-                    state = States.SEARCH_STUDENTS
-                case "l":
-                    state = States.LOGGING_IN
-                case "r":
-                    state = States.REGISTER
-                case "i":
-                    state = States.IMPORTANT_LINKS
-                case "u":
-                    state = States.USEFUL_LINKS
-                case "p":
-                    state = States.PENDING_REQUESTS
-                case "e":
-                    print("\nThank you for visiting!")
-                    state = States.EXIT
-                case _:
-                    print("\nInvalid option. Please try again.")
+            user_auth = user_auth.lower()
+            if user_auth == "w":
+                state = States.PROMOTIONAL_VIDEO
+            elif user_auth == "f":
+                state = States.CONNECT
+            elif user_auth == "s":
+                state = States.SEARCH_STUDENTS
+            elif user_auth == "l":
+                state = States.LOGGING_IN
+            elif user_auth == "r":
+                state = States.REGISTER
+            elif user_auth == "i":
+                state = States.IMPORTANT_LINKS
+            elif user_auth == "u":
+                state = States.USEFUL_LINKS
+            elif user_auth == "p":
+                state = States.PENDING_REQUESTS
+            elif user_auth == "e":
+                print("\nThank you for visiting!")
+                state = States.EXIT
+            else:
+                print("\nInvalid option. Please try again.")
 
         # Promotional Video
         elif state == States.PROMOTIONAL_VIDEO:
@@ -74,11 +71,13 @@ def main():
                 print("\nThey are a part of the InCollege system.")
 
                 user_auth = input(
-                    "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: ")
+                    "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: "
+                )
                 while not valid.validate_input_lrm(user_auth):
                     print("\nInvalid option. Please try again.")
                     user_auth = input(
-                        "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: ")
+                        "\nJoin inCollege to connect with them. (l)ogin | (r)egister | (m)ain menu: "
+                    )
 
                 if user_auth.lower() == "l":
                     state = States.LOGGING_IN
