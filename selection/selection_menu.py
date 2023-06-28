@@ -284,7 +284,7 @@ def show_network(friend_list, user, users, request_list):
                 elif user_input == '1' or user_input == '2' and  len(request_list) == 0:
                     print("You don't have any pending friend request")       
                 elif user_input == '3':
-                    return     
+                    break    
         elif choice == '3':
             return
         else:
