@@ -4,7 +4,9 @@ from util import util as util
 
 
 def selection_menu_options(user, friend_list, request_list, users): # user is an array of username, firstname, lastname, language\
+    print(user)
     while True:
+
         if len(request_list) > 0:
             print("*** YOU HAVE NEW FRIEND REQUEST(S) ***")
 
@@ -23,6 +25,7 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
                 job_search(user)
             elif choice == '2':
                 find_friend(users, user)
+
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
@@ -57,7 +60,7 @@ def find_friend(users, current_user):
                     matching_users.append(user)
                     found = 1
         elif search_option == "m":
-            type = input("Please type the university: ")
+            type = input("Please type the major: ")
             for user in users:
                 if users[user][8] == type and user != current_user[0]:
                     matching_users.append(user)
@@ -103,7 +106,6 @@ def find_friend(users, current_user):
                             print("Please check if you type correctly or not")  
                 elif choice == '2':
                     break       
-
 def show_network(friend_list, user, users, request_list):
     while True:
         print("*** This is your friend list ***")
@@ -279,14 +281,12 @@ def show_network(friend_list, user, users, request_list):
                        print("There may be a typo, can you try again")
                     elif typo == 0:
                         print("You have successfully removes this pending friend request")
-                elif user_input == '1' or user_input == '2' and len(request_list) == 0:
-                    print("You don't have any pending friend request") 
+                elif user_input == '1' or user_input == '2' and  len(request_list) == 0:
+                    print("You don't have any pending friend request")       
                 elif user_input == '3':
-                    break
-                else:
-                    print("\nPlease try again\n")
+                    return     
         elif choice == '3':
-            break
+            return
         else:
             print("\nPlease try again\n")
         

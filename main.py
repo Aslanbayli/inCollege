@@ -61,11 +61,13 @@ def main():
 
         # Connect
         elif state == States.CONNECT:
-            print("\nFill out the prompts below to find people you might know.")
-            f_name = input("First Name: ")
-            l_name = input("Last Name: ")
-            found = util.connect(users, f_name, l_name)
-            if found:
+            # print("\nFill out the prompts below to find people you might know.")
+            # f_name = input("First Name: ")
+            # l_name = input("Last Name: ")
+            # found = util.connect(users, f_name, l_name)
+            found = util.find_friend(users)
+            if found == True:
+                
                 print("\nThey are a part of the InCollege system.")
 
                 user_auth = input(
@@ -81,7 +83,9 @@ def main():
                     state = States.REGISTER
                 else:
                     state = States.START_MENU
-            else:
+            elif found == "return":
+                    state = States.START_MENU
+            elif found == False:
                 print("\nThey are not yet a part of the InCollege system yet.")
                 state = States.START_MENU
 
