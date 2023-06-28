@@ -106,11 +106,44 @@ def file_job_read(jobs, filename="data/jobs.csv"):
             else:
                 continue
             
-def connect(users, f_name, l_name):
-    for username in users:
-        first_name = users[username][1]
-        last_name = users[username][2]
-        if first_name.lower() == f_name and last_name.lower() == l_name:
+def find_friend(users):
+    while True:
+        found = 0
+        print("\nSearch for other students:")
+        search_option = input(
+            "Search by (l)ast name, (u)niversity, (m)ajor or (r)eturn: "
+        ).lower()
+        matching_users = []
+        if search_option == "l":
+            type = input("Please type the last name: ")
+            for user in users:
+                if users[user][2] == type:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "u":
+            type = input("Please type the university: ")
+            for user in users:
+                if users[user][7] == type:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "m":
+            type = input("Please type the major: ")
+            for user in users:
+                if users[user][8] == type:
+                    matching_users.append(user)
+                    found = 1
+        elif search_option == "r":
+            return "return"
+        else:
+            print("\nInvalid option. Please try again.")
+            continue
+
+        if found == 0:
+            return False
+        elif found == 1:
+            print("\nHere are the results:\n")
+            for friend in matching_users:
+                print(f"{friend}")
             return True
-    return False
+            
     
