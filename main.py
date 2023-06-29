@@ -17,10 +17,12 @@ class States(Enum):
     SEARCH_STUDENTS = 8
     PENDING_REQUESTS = 9
     EXIT = 10
+    PROFILE = 11
+    EDIT_PROFILE = 12  # New state for editing profile
 
 def main():
-    users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests]]}
-    user = []  # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major]
+    users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests], {profile_sections}]}
+    user = []  # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, {profile_sections}]
 
     state = States.START_MENU  # Current state
 
@@ -153,7 +155,8 @@ def main():
                     users[username][5],
                     users[username][6],
                     users[username][7],
-                    users[username][8]
+                    users[username][8],
+                    users[username][9]  # Profile sections
                 ]
 
         # User Register
@@ -223,8 +226,14 @@ def main():
 
         # User Logged In
         elif state == States.LOGGED_IN:
-            select.selection_menu_options(user)
-            state = States.START_MENU
+            selection = select.selection_menu_options(user)
+
+            if selection == "view_profile":
+                state = States.PROFILE
+            elif selection == "edit_profile":
+                state = States.EDIT_PROFILE
+            else:
+                state = States.START_MENU
 
         # Search Students
         elif state == States.SEARCH_STUDENTS:
@@ -286,6 +295,48 @@ def main():
                 else:
                     for request in pending_requests:
                         print(f"- {request}")
+
+            input("\nPress Enter to return to the main menu...")
+            state = States.START_MENU
+
+        # Profile
+        elif state == States.PROFILE:
+            print("\n=== Profile ===")
+            print("About:")
+            print(f"Username: {user[0]}")
+            print(f"Name: {user[1]} {user[2]}")
+            print(f"University: {user[7]}")
+            print(f"Major: {user[8]}")
+
+            if not user[9]:
+                print("\nProfile is not complete. Please fill out the following sections.")
+            else:
+                print("\nProfile Sections:")
+                for section, content in user[9].items():
+                    print(f"{section.capitalize()}:")
+                    print(content)
+
+            input("\nPress Enter to return to the main menu...")
+            state = States.START_MENU
+
+        # Edit Profile
+        elif state == States.EDIT_PROFILE:
+            print("\n=== Edit Profile ===")
+            about = input("About: ")
+            experience = input("Experience: ")
+            education = input("Education: ")
+
+            user[9] = {
+                "about": about,
+                "experience": experience,
+                "education": education
+            }
+
+            users[user[0]][9] = user[9]
+
+            util.file_save(users)
+
+            print("\nProfile successfully updated.")
 
             input("\nPress Enter to return to the main menu...")
             state = States.START_MENU
