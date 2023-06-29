@@ -90,6 +90,9 @@ def find_friend(users, current_user, friend_request):
                         print("You don't have anyone in here to add")
                         continue
                     add_friend = input("Please type the username of the person you want to add: ")
+                    if add_friend not in matching_users:
+                        print("\nYou cannot type something that is not in the list, please try again\n")
+                        continue
                     if add_friend == current_user[0]:
                         print("You cannot add yourself")
                         continue
@@ -210,6 +213,9 @@ def show_network(friend_list, user, request_list, friend_request):
                 user_input = input("Please select which option you would like to do: ")
                 if user_input == '1' and len(request_list) != 0:
                     accepting_person = input("Please type the username of the person you'd like to add: ")
+                    if accepting_person not in friend_request[user[0]]:
+                        print("\nYou cannot type something that is not in the list\n")
+                        continue
                     with open("data/database.csv", "r") as file:
                         lines = file.readlines()
                     typo = 0
@@ -276,6 +282,9 @@ def show_network(friend_list, user, request_list, friend_request):
                                     file.write(line)
                 elif user_input == '2' and len(request_list) != 0: 
                     removing_person = input("Please type the username of the person you'd like to remove: ")
+                    if removing_person not in friend_request[user[0]]:
+                        print("\nYou cannot type something that is not in the list\n")
+                        continue
                     typo = 0
                     with open("data/request.csv", "r") as file:
                         lines = file.readlines()
