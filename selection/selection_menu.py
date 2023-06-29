@@ -18,7 +18,7 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
         print("***(4) USEFUL LINKS***")
         print("***(5) IMPORTANT LINKS***")
         print("***(6) SHOW MY NETWORK***")
-        print("***(7) VIEW MY PROFILE***")
+        print("***(7) VIEW/EDIT MY PROFILE***")
         print("***(8) LOG OUT***")
         
         choice = input("Please select which option you would like to do (e.x. \"1\"): ")
@@ -36,7 +36,7 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
             elif choice == '6':
                 show_network(friend_list, user, users, request_list)
             elif choice == '7':
-                profile.show_profile(user)
+                profile.edit_profile(user)  
             elif choice == '8':
                 return
         else:
