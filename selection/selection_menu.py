@@ -32,13 +32,13 @@ def selection_menu_options(user, friend_list, request_list, users, friend_reques
             elif choice == '5':
                 important_links("logged_in", user)
             elif choice == '6':
-                show_network(friend_list, user, request_list, friend_request)
+                show_network( user, users, request_list, friend_request)
             elif choice == '7':
                 return
         else:
             print("\nInvalid option. Please try again.")
 
-def find_friend(users, current_user, friend_request):
+def find_friend(users, current_user, friend_request): #This is a function for looking for friends through univeristy, last name, or major
     while True:
         found = 0
         print("\nSearch for other students:")
@@ -46,34 +46,34 @@ def find_friend(users, current_user, friend_request):
             "Search by (l)ast name, (u)niversity, (m)ajor or (r)eturn: "
         ).lower()
         matching_users = []
-        if search_option == "l":
+        if search_option == "l": #This is the option for choosing to search using last name
             type = input("Please type the last name: ")
             for user in users:
                 if users[user][2] == type and user != current_user[0]:
                     matching_users.append(user)
                     found = 1
-        elif search_option == "u":
+        elif search_option == "u": #This is the option for choosing to search using university
             type = input("Please type the university: ")
             for user in users:
                 if users[user][7] == type and user != current_user[0] :
                     matching_users.append(user)
                     found = 1
-        elif search_option == "m":
+        elif search_option == "m": #This is the option for choosing to search using major
             type = input("Please type the major: ")
             for user in users:
                 if users[user][8] == type and user != current_user[0]:
                     matching_users.append(user)
                     found = 1
-        elif search_option == "r":
+        elif search_option == "r": #This is the option for returning
             return
         else:
             print("\nInvalid option. Please try again.")
             continue
 
-        if found == 0:
+        if found == 0: #if we couldn't find anyone
             print("Cannot find this person, please try again")
-        elif found == 1:
-            if current_user[0] in matching_users:
+        elif found == 1: #if we found someone
+            if current_user[0] in matching_users: #preventing having the current user's name to appear in this list
                 matching_users.remove(current_user[0])
 
             while True:
@@ -84,29 +84,29 @@ def find_friend(users, current_user, friend_request):
                 print("***(2) RETURN ***")
                 choice = input("Please select which option you would like to do: ")
 
-                if choice == '1':
+                if choice == '1': #option for adding the friend
                     reset = 0
-                    if len(matching_users) == 0:
+                    if len(matching_users) == 0: #if there's no one in the list, we cannot add anyone
                         print("You don't have anyone in here to add")
                         continue
                     add_friend = input("Please type the username of the person you want to add: ")
-                    if add_friend not in matching_users:
+                    if add_friend not in matching_users: #preventing users to type name randomly that can potentially harm the system
                         print("\nYou cannot type something that is not in the list, please try again\n")
                         continue
-                    if add_friend == current_user[0]:
+                    if add_friend == current_user[0]: #users cannot add themselves
                         print("You cannot add yourself")
                         continue
-                    for username, friends in friend_request.items():
+                    for username, friends in friend_request.items(): #user cannot resend invitation to the same person twice
                         if username == add_friend:
                             if current_user[0] in friends:
                                 print("You have already sent this invitation")
                                 reset = 1
-                    if reset == 1:
+                    if reset == 1: #if anything wrong happens, we prompt user to try again
                         continue
                     add = 0
                     with open("data/request.csv", "r") as file:
                         lines = file.readlines()      
-                    with open("data/request.csv", "w") as file:
+                    with open("data/request.csv", "w") as file: #updating the database
                         for line in lines:
                             data = line.strip().split(',')
                             if data[0] == add_friend:
@@ -126,13 +126,13 @@ def find_friend(users, current_user, friend_request):
                             print("Please check if you type correctly or not")  
                 elif choice == '2':
                     break       
-def show_network(friend_list, user, request_list, friend_request):
+def show_network(user,users, request_list, friend_request): #showing option to work with user's network
     while True:
         print("*** This is your friend list ***")
-        if (len(friend_list) == 0):
+        if (len(users[user[0]][9:]) == 0):
             print("None")
         else:
-            for friend in friend_list:
+            for friend in users[user[0]][9:]:
                 print(f'{friend}')
         print("\n***(1) REMOVING FRIEND ***")
         print("***(2) PENDING REQUEST ***")
@@ -141,7 +141,7 @@ def show_network(friend_list, user, request_list, friend_request):
         choice = input("Please select which option you would like to do: ")
         
 
-        if choice == '1':
+        if choice == '1': #option for removing friend
             removal_friend = input("Please type the username of the person you want to remove: ")
             with open("data/database.csv", "r") as file:
                 lines = file.readlines()
@@ -150,8 +150,8 @@ def show_network(friend_list, user, request_list, friend_request):
                     
             with open("data/database.csv", "w") as file:
                 for line in lines:
-                    data = line.strip().split(',')
-                    if data[0] == user[0]:
+                    data = line.strip().split(',') #read the data in the database
+                    if data[0] == user[0]: #This is when the line reads to current user
                         username = data[0]
                         passwd = data[1]
                         f_name = data[2]
@@ -165,10 +165,13 @@ def show_network(friend_list, user, request_list, friend_request):
                                         
                         # Additional data (if available)
                         additional_data = data[10:]
-                        if removal_friend in additional_data:
-                            additional_data.remove(removal_friend)
-                            if removal_friend in friend_list:
+                        if removal_friend in additional_data: 
+                            additional_data.remove(removal_friend) #removing the friend in the database
+                            friend_list = users[user[0]][9:] 
+                            if removal_friend in friend_list: #removing friend in the users dictionary and update the dictionary
                                 friend_list.remove(removal_friend)
+                                users[user[0]][9:] = friend_list
+                                
                             else:
                                 print("error")
                         else:
@@ -177,7 +180,7 @@ def show_network(friend_list, user, request_list, friend_request):
                                 
                                 
                                 
-                    if data[0] == removal_friend:
+                    if data[0] == removal_friend: #This is when the line reads to the removal friend
                         username = data[0]
                         passwd = data[1]
                         f_name = data[2]
@@ -191,15 +194,19 @@ def show_network(friend_list, user, request_list, friend_request):
                                     
                         # Additional data (if available)
                         additional_data = data[10:]
-                        if user[0] in additional_data:
+                        if user[0] in additional_data: #removing current user from the removal friend's database
                             additional_data.remove(user[0])
+                            friend_list = users[removal_friend][9:]
+                            if user[0] in friend_list: #removing current user from the removal friends in dictionary and update the dictionary
+                                friend_list.remove(user[0])
+                                users[removal_friend][9:] = friend_list
                         line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
                     file.write(line)  
                 if isnt_friend == 1:
                     print("\nThis friend is not in the list, please try again\n")
                 else:
                     print("\nWe have successfully removed the user, please select what you want to do next\n")
-        elif choice == '2':
+        elif choice == '2': #Looking at the pending list
             while True:
                 print("*** This is your friend pending list ***")
                 if (len(request_list) == 0):
@@ -211,7 +218,7 @@ def show_network(friend_list, user, request_list, friend_request):
                 print("***(2) REJECTING FRIEND REQUEST ***")
                 print("***(3) RETURN ***")
                 user_input = input("Please select which option you would like to do: ")
-                if user_input == '1' and len(request_list) != 0:
+                if user_input == '1' and len(request_list) != 0: #This is option to accept friend request
                     accepting_person = input("Please type the username of the person you'd like to add: ")
                     if accepting_person not in friend_request[user[0]]:
                         print("\nYou cannot type something that is not in the list\n")
@@ -222,7 +229,7 @@ def show_network(friend_list, user, request_list, friend_request):
                     with open("data/database.csv", "w") as file:
                         for line in lines:
                             data = line.strip().split(',')
-                            if data[0] == user[0]:
+                            if data[0] == user[0]:#When it scans to the current user line in the database
                                 username = data[0]
                                 passwd = data[1]
                                 f_name = data[2]
@@ -236,16 +243,18 @@ def show_network(friend_list, user, request_list, friend_request):
                                                 
                                 # Additional data (if available)
                                 additional_data = data[10:]
-                                if accepting_person in request_list:
-                                    additional_data.append(accepting_person)
+                                if accepting_person in request_list: #if user types the person in the request list
+                                    additional_data.append(accepting_person) #we're going to update the database
+                                    if accepting_person not in users[user[0]]:
+                                        users[user[0]].append(accepting_person)#we're going to update the users dictionary as well. 
                                     
-                                    request_list.remove(accepting_person)
+                                    request_list.remove(accepting_person)#removing the person from the request list
                                 else:
                                     typo = 1
                                 line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
                                                    
                                        
-                            if data[0] == accepting_person:
+                            if data[0] == accepting_person: #When it scans to the accepting person line in database
                                 username = data[0]
                                 passwd = data[1]
                                 f_name = data[2]
@@ -260,7 +269,9 @@ def show_network(friend_list, user, request_list, friend_request):
                                 # Additional data (if available)
                                 additional_data = data[10:]
                                 if accepting_person not in additional_data:
-                                    additional_data.append(user[0])
+                                    additional_data.append(user[0]) #updating the database
+                                    if user[0] not in users[accepting_person]:
+                                        users[accepting_person].append(user[0])#updating the users dictionary
                                 line = ','.join([username, passwd, f_name, l_name, current_language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data) + '\n'
                                     
                             file.write(line)  
@@ -280,7 +291,7 @@ def show_network(friend_list, user, request_list, friend_request):
                                             additional_data.remove(accepting_person)
                                         line = ','.join([username] + additional_data) + '\n'
                                     file.write(line)
-                elif user_input == '2' and len(request_list) != 0: 
+                elif user_input == '2' and len(request_list) != 0: #This is the option to remove the pending request
                     removing_person = input("Please type the username of the person you'd like to remove: ")
                     if removing_person not in friend_request[user[0]]:
                         print("\nYou cannot type something that is not in the list\n")
@@ -294,9 +305,9 @@ def show_network(friend_list, user, request_list, friend_request):
                             if data[0] == user[0]:
                                 username = data[0]
                                 additional_data = data[1:]
-                                if removing_person in additional_data:
+                                if removing_person in additional_data:#removing from the database
                                     additional_data.remove(removing_person)
-                                    if removing_person in request_list:
+                                    if removing_person in request_list: #removing from the request list
                                         request_list.remove(removing_person)
                                 else:
                                     typo = 1
