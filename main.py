@@ -226,51 +226,6 @@ def main():
             select.selection_menu_options(user, friend_list, request_list, users)
             state = States.START_MENU
 
-        # # Search Students
-        # elif state == States.SEARCH_STUDENTS:
-        #     print("\nSearch for other students:")
-        #     search_option = input(
-        #         "Search by (l)ast name, (u)niversity, or (m)ajor: "
-        #     ).lower()
-
-        #     if search_option == "l":
-        #         search_criteria = "last name"
-        #     elif search_option == "u":
-        #         search_criteria = "university"
-        #     elif search_option == "m":
-        #         search_criteria = "major"
-        #     else:
-        #         print("\nInvalid option. Please try again.")
-        #         continue
-
-        #     search_value = input("Enter the search value: ")
-        #     found_students = util.search_students(users, search_value, search_criteria)
-        #     if found_students:
-        #         print("\nStudents found:")
-        #         for index, student in enumerate(found_students):
-        #             print(f"{index + 1}. {student[1]} {student[2]}")
-
-        #         send_request = input("Enter the number of the student to send a friend request (or 'c' to cancel): ")
-        #         if send_request.lower() == 'c':
-        #             state = States.START_MENU
-        #         else:
-        #             try:
-        #                 send_request_index = int(send_request) - 1
-        #                 if send_request_index >= 0 and send_request_index < len(found_students):
-        #                     selected_student = found_students[send_request_index]
-        #                     recipient_username = users[selected_student[0]][0]
-        #                     users[user[0]][9].append(recipient_username)  # Add the friend request to current user's friend requests
-        #                     print(f"\nFriend request sent to {selected_student[1]} {selected_student[2]} ({selected_student[0]}).")
-        #                 else:
-        #                     print("\nInvalid option. Please try again.")
-        #             except ValueError:
-        #                 print("\nInvalid option. Please try again.")
-        #     else:
-        #         print("\nNo students found with the given search criteria.")
-
-        #     state = States.START_MENU
-
-
         else:
             state = States.START_MENU
 

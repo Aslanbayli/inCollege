@@ -1,10 +1,11 @@
 import main as main
 from user_auth import validator as valid
 from util import util as util
+from profile import profile as profile
 
 
 def selection_menu_options(user, friend_list, request_list, users): # user is an array of username, firstname, lastname, language\
-    print(user)
+    # print(user)
     while True:
 
         if len(request_list) > 0:
@@ -17,15 +18,15 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
         print("***(4) USEFUL LINKS***")
         print("***(5) IMPORTANT LINKS***")
         print("***(6) SHOW MY NETWORK***")
-        print("***(7) LOG OUT***")
+        print("***(7) VIEW MY PROFILE***")
+        print("***(8) LOG OUT***")
         
         choice = input("Please select which option you would like to do (e.x. \"1\"): ")
-        if choice in ['1', '2', '3', '4', '5', '6', '7']:
+        if choice in ['1', '2', '3', '4', '5', '6', '7', '8']:
             if choice == '1':
                 job_search(user)
             elif choice == '2':
                 find_friend(users, user)
-
             elif choice == '3':
                 skill_selection()
             elif choice == '4':
@@ -35,6 +36,8 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
             elif choice == '6':
                 show_network(friend_list, user, users, request_list)
             elif choice == '7':
+                profile.show_profile(user)
+            elif choice == '8':
                 return
         else:
             print("\nInvalid option. Please try again.")
