@@ -3,8 +3,7 @@ from user_auth import validator as valid
 from util import util as util
 
 
-def selection_menu_options(user, friend_list, request_list, users): # user is an array of username, firstname, lastname, language\
-    print(user)
+def selection_menu_options(user, friend_list, request_list, users, friend_request): # user is an array of username, firstname, lastname, language\
     while True:
 
         if len(request_list) > 0:
@@ -24,7 +23,7 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
             if choice == '1':
                 job_search(user)
             elif choice == '2':
-                find_friend(users, user)
+                find_friend(users, user, friend_request)
 
             elif choice == '3':
                 skill_selection()
@@ -33,13 +32,13 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
             elif choice == '5':
                 important_links("logged_in", user)
             elif choice == '6':
-                show_network(friend_list, user, users, request_list)
+                show_network(friend_list, user, request_list, friend_request)
             elif choice == '7':
                 return
         else:
             print("\nInvalid option. Please try again.")
 
-def find_friend(users, current_user):
+def find_friend(users, current_user, friend_request):
     while True:
         found = 0
         print("\nSearch for other students:")
@@ -50,7 +49,7 @@ def find_friend(users, current_user):
         if search_option == "l":
             type = input("Please type the last name: ")
             for user in users:
-                if users[user][2] == type:
+                if users[user][2] == type and user != current_user[0]:
                     matching_users.append(user)
                     found = 1
         elif search_option == "u":
@@ -76,6 +75,7 @@ def find_friend(users, current_user):
         elif found == 1:
             if current_user[0] in matching_users:
                 matching_users.remove(current_user[0])
+
             while True:
                 print("\nHere are the results:\n")
                 for friend in matching_users:
@@ -85,7 +85,21 @@ def find_friend(users, current_user):
                 choice = input("Please select which option you would like to do: ")
 
                 if choice == '1':
+                    reset = 0
+                    if len(matching_users) == 0:
+                        print("You don't have anyone in here to add")
+                        continue
                     add_friend = input("Please type the username of the person you want to add: ")
+                    if add_friend == current_user[0]:
+                        print("You cannot add yourself")
+                        continue
+                    for username, friends in friend_request.items():
+                        if username == add_friend:
+                            if current_user[0] in friends:
+                                print("You have already sent this invitation")
+                                reset = 1
+                    if reset == 1:
+                        continue
                     add = 0
                     with open("data/request.csv", "r") as file:
                         lines = file.readlines()      
@@ -93,6 +107,7 @@ def find_friend(users, current_user):
                         for line in lines:
                             data = line.strip().split(',')
                             if data[0] == add_friend:
+                                friend_request[add_friend] += [current_user[0]]
                                 add = 1
                                 username = data[0]
                                 # Additional data (if available)
@@ -101,12 +116,14 @@ def find_friend(users, current_user):
                                 line = ','.join([username] + additional_data) + '\n'
                             file.write(line)
                         if add == 1:
-                            print("Already sent the friend request")
+                            print("You invitation has been sent")
+                            if add_friend in matching_users:
+                                matching_users.remove(add_friend)
                         else:
                             print("Please check if you type correctly or not")  
                 elif choice == '2':
                     break       
-def show_network(friend_list, user, users, request_list):
+def show_network(friend_list, user, request_list, friend_request):
     while True:
         print("*** This is your friend list ***")
         if (len(friend_list) == 0):
@@ -185,8 +202,7 @@ def show_network(friend_list, user, users, request_list):
                 if (len(request_list) == 0):
                     print("None")
                 else:
-                    for pending in request_list:
-
+                    for pending in friend_request[user[0]]:
                         print(f'{pending}')
                 print("\n***(1) ACCEPTING FRIEND REQUEST ***")
                 print("***(2) REJECTING FRIEND REQUEST ***")
