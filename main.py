@@ -20,7 +20,7 @@ class States(Enum):
 
 
 def main():
-    users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests]]}
+    users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, friend 1, friend 2]}
     user = []  # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major]
     friend_request = {} #{username: [friend 1, friend 2, ...]}
 
