@@ -36,7 +36,7 @@ def selection_menu_options(user, friend_list, request_list, users): # user is an
             elif choice == '6':
                 show_network(friend_list, user, users, request_list)
             elif choice == '7':
-                profile.edit_profile(user)  
+                profile.profile_options(user)  
             elif choice == '8':
                 return
         else:
