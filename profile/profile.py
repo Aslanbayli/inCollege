@@ -69,7 +69,7 @@ def edit_title(user):
 
     # if the title is empty initially, just grab the input from the user and save it to the json file
     if existing_title == '': 
-        title = input("Please enter the title for your profile: \n")
+        title = input("Please enter the title for your profile: ")
         user_data["Title"] = title
         save_user_data(user[0], user_data)
 
@@ -88,7 +88,7 @@ def edit_title(user):
                 save_user_data(user[0], user_data)
                 break
             elif choice == 'o':
-                new_title = input("Please enter the new title for your profile: \n")
+                new_title = input("Please enter the new title for your profile: ")
                 user_data["Title"] = new_title
                 save_user_data(user[0], user_data)
                 break
@@ -105,7 +105,7 @@ def edit_major(user):
 
     # if the major is empty initially, just grab the input from the user and save it to the json file
     if existing_major == '': 
-        major = input("Please type out your official major on your profile: \n")
+        major = input("Please type out your official major on your profile: ")
         capitalized_major = ' '.join([word[0].upper() + word[1:].lower() for word in major.split()])
         user_data["Major"] = capitalized_major
         save_user_data(user[0], user_data)
@@ -431,6 +431,7 @@ def view_profile(user):
     if ((all(key in user_data for key in keys_possibility_1)) or (all(key in user_data for key in keys_possibility_2))):
 
         print("*** YOUR PROFILE ***")
+        print(user[1] + " " + user[2])
         for key, value in user_data.items():
             if type(value) is list:
                 print(f"{key}: \t")
@@ -446,4 +447,70 @@ def view_profile(user):
         print("\nYou must complete all required sections of your profile. You don\'t need to have a job experience section, but you must have the other sections!\n")
         return
 
-# def view_friends_profile(user):
+def view_friends_profile(user):
+    with open("data/database.csv", "r") as file:
+        lines = file.readlines()
+
+    friends = []
+    for line in lines:
+        data = line.strip().split(',')
+        if data[0] == user[0]:
+            friends = data[10:]
+
+    if not friends:
+        print("You have no friends! Go get some friends.")
+        return
+
+    friend_list_view = []
+    for f in friends:
+        user_data_friend = load_user_data(f)
+
+        keys_possibility_1 = ['Title', 'Major', 'University', 'About', 'Job History', 'Education']
+        keys_possibility_2 = ['Title', 'Major', 'University', 'About', 'Education']
+
+        first_name = ''
+        last_name = ''
+        for line in lines:
+            data = line.strip().split(',')
+            if data[0] == f:
+                first_name = data[2]
+                last_name = data[3]
+
+        if ((all(key in user_data_friend for key in keys_possibility_1)) or (all(key in user_data_friend for key in keys_possibility_2))):
+            friend_list_view.append((f, f + " [PROFILE]", first_name, last_name))
+        else:
+            friend_list_view.append((f, f, first_name, last_name))
+
+    print("*** FRIENDS ***")
+    for index, friend in enumerate(friend_list_view, start=1):
+        print(f"{index} {friend[1]}")
+
+    while True:
+        choice = input("Please type the number next to your friend whose profile you would like to see. Only enter the number of the friend whose name has \'[PROFILE]\' tag next to them. Press (11) if you want to go back: ")
+        try:
+            choice1 = int(choice)
+        except ValueError:
+            print("Invalid input, please enter a number.\n")
+            continue
+        if choice1 == 11:
+            break
+        if 1 <= choice1 <= len(friend_list_view):
+            friend_username, friend_name, first_name, last_name = friend_list_view[choice1 - 1]
+            if "[PROFILE]" in friend_name:
+                user_data_view = load_user_data(friend_username)
+                print("*** THEIR PROFILE ***")
+                print(f"{first_name} {last_name}")
+                for key, value in user_data_view.items():
+                    if type(value) is list:
+                        print(f"{key}: \t")
+                        for i, item in enumerate(value, start=1):
+                            print(f"\t{i}:")
+                            for subkey, subvalue in item.items():
+                                print(f"\t\t{subkey}: {subvalue}")
+                    else:
+                        print(f"{key}: {value}")
+                print()
+            else:
+                print("The selected friend does not have a profile.")
+        else:
+            print("Invalid option, please try again. Their profile is probably not displayed, or you didn't pass in a correct input")
