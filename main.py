@@ -20,9 +20,9 @@ class States(Enum):
 
 
 def main():
-    users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, [friend_requests]]}
+    users = {}  # {username: [password, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major, friend 1, friend 2]}
     user = []  # [username, first_name, last_name, language, email_bool, sms_bool, targeted_ads_bool, university, major]
-    friend_request = {}
+    friend_request = {} #{username: [friend 1, friend 2, ...]}
 
     state = States.START_MENU  # Current state
 
@@ -223,7 +223,7 @@ def main():
         elif state == States.LOGGED_IN:
             friend_list = users[username][9:]
             request_list = friend_request[username][0:]
-            select.selection_menu_options(user, friend_list, request_list, users)
+            select.selection_menu_options(user, friend_list, request_list, users, friend_request)
             state = States.START_MENU
 
         else:
