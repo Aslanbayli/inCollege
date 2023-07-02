@@ -1,7 +1,6 @@
 import json
 
 def profile_options(user):
-    print(user)
     while True:
         print("*** (1) EDIT TITLE ***")
         print("*** (2) EDIT MAJOR ***")
@@ -10,10 +9,11 @@ def profile_options(user):
         print("*** (5) EDIT JOB EXPERIENCE ***")
         print("*** (6) EDIT EDUCATION EXPERIENCE ***")
         print("*** (7) VIEW PROFILE ***")
-        print("*** (8) RETURN ***")
+        print("*** (8) VIEW YOUR FRIEND\'S PROFILE ***")
+        print("*** (9) RETURN ***")
 
         choice = input("Select which part of your profile you would like to edit (e.g. \"1\"). Or, just view your profile: ")
-        if choice in ['1', '2', '3', '4', '5', '6', '7', '8']:
+        if choice in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
             if choice == '1':
                 edit_title(user)
             elif choice == '2':
@@ -29,6 +29,8 @@ def profile_options(user):
             elif choice == '7':
                 view_profile(user)
             elif choice == '8':
+                view_friends_profile(user)
+            elif choice == '9':
                 break
             else:
                 print("\nInvalid option, please try again.\n")
@@ -63,12 +65,12 @@ def edit_title(user):
     user_data = load_user_data(user[0])
 
     # We'll get the current contents of our title for the user
-    existing_title = user_data.get('title', '')
+    existing_title = user_data.get('Title', '')
 
     # if the title is empty initially, just grab the input from the user and save it to the json file
     if existing_title == '': 
-        title = input("Please enter the title for your profile: ")
-        user_data["title"] = title
+        title = input("Please enter the title for your profile: \n")
+        user_data["Title"] = title
         save_user_data(user[0], user_data)
 
     # if it's not empty, add-on to the existing title
@@ -82,12 +84,12 @@ def edit_title(user):
 
             if choice == 'a': 
                 additional_stuff = input("Please enter what you want to add to your title: ")
-                user_data["title"] = existing_title + (' ' if existing_title else '') + additional_stuff
+                user_data["Title"] = existing_title + (' ' if existing_title else '') + additional_stuff
                 save_user_data(user[0], user_data)
                 break
             elif choice == 'o':
-                new_title = input("Please enter the new title for your profile: ")
-                user_data["title"] = new_title
+                new_title = input("Please enter the new title for your profile: \n")
+                user_data["Title"] = new_title
                 save_user_data(user[0], user_data)
                 break
             else:
@@ -99,13 +101,13 @@ def edit_major(user):
     user_data = load_user_data(user[0])
 
     # We'll get the current contents of our major for the user
-    existing_major = user_data.get('major', '')
+    existing_major = user_data.get('Major', '')
 
     # if the major is empty initially, just grab the input from the user and save it to the json file
     if existing_major == '': 
-        major = input("Please type out your official major on your profile: ")
+        major = input("Please type out your official major on your profile: \n")
         capitalized_major = ' '.join([word[0].upper() + word[1:].lower() for word in major.split()])
-        user_data["major"] = capitalized_major
+        user_data["Major"] = capitalized_major
         save_user_data(user[0], user_data)
 
     # if it's not empty, add-on to the existing major
@@ -120,13 +122,13 @@ def edit_major(user):
             if choice == 'a': 
                 additional_stuff = input("Please enter what you want to add to your major: ")
                 capitalized_additional_stuff = ' '.join([word[0].upper() + word[1:].lower() for word in additional_stuff.split()])
-                user_data["major"] = existing_major + (' ' if existing_major else '') + capitalized_additional_stuff
+                user_data["Major"] = existing_major + (' ' if existing_major else '') + capitalized_additional_stuff
                 save_user_data(user[0], user_data)
                 break
             elif choice == 'o':
                 new_major = input("Please enter the new major for your profile: ")
                 capitalized_major = ' '.join([word[0].upper() + word[1:].lower() for word in new_major.split()])
-                user_data["major"] = capitalized_major
+                user_data["Major"] = capitalized_major
                 save_user_data(user[0], user_data)
                 break
             else:
@@ -174,7 +176,7 @@ def edit_university(user):
 
 # --- About Section Edit ---
 def edit_about(user):
-# loading our user data from json file
+    # loading our user data from json file
     user_data = load_user_data(user[0])
 
     # We'll get the current contents of our about section for the user
@@ -208,8 +210,240 @@ def edit_about(user):
             else:
                 print("\nInvalid option, try again.\n")
     
+# --- Job Edit Section ---
 def edit_job(user):
-    
-# def edit_education(user):
-    
-# def view_profile(user):
+    # loading our user data from json file
+    user_data = load_user_data(user[0])
+    user_data.setdefault('Job History', [])
+
+    # We'll get the current contents of our about section for the user
+    existing_job_history = user_data.get('Job History', '')
+
+    # Stop the user from adding more than 3 past jobs
+    if len(user_data['Job History']) >= 3:
+        print("You have already entered 3 past jobs.")
+        return
+
+    while True:
+        choice1 = input("Would you like to change something about your Job History in your inCollege profile? Input (y)es or (n)o: ")
+
+        if choice1 == 'y':
+            # if the job history section is initially empty, just grab the input from the user and save it to the json file
+            if existing_job_history == []: 
+                job_title = input("Enter the job title: ")
+                employer = input("Enter the employer: ")
+                date_started = input("Enter the date you started this job: ")
+                date_ended = input("Enter the date you ended this job: ")
+                location = input("Enter the location of this job: ")
+                description = input("Enter a description of what you did at this job: ")
+
+                user_data["Job History"].append({
+                    'job_title': job_title,
+                    'employer': employer,
+                    'date_started': date_started,
+                    'date_ended': date_ended,
+                    'location': location,
+                    'description': description
+                })
+                save_user_data(user[0], user_data)
+
+            # If it's not empty, we are adding/updating to the job section
+            else:
+                while True:
+                    # Print out the jobs so the user can see what jobs they have
+                    for i, job in enumerate(user_data['Job History'], start=1):
+                        print(f"Job {i}: {job['job_title']} at {job['employer']}, from {job['date_started']} to {job['date_ended']}, in {job['location']}")
+
+                    choice = input("Would you like to (a)dd a new job, (u)pdate an existing one, or (r)eturn to previous screen?: ")
+
+                    if choice == 'u':
+                        while True:
+                            # Print out the jobs so the user can see what jobs they have
+                            for i, job in enumerate(user_data['Job History'], start=1):
+                                print(f"Job {i}: {job['job_title']} at {job['employer']}, from {job['date_started']} to {job['date_ended']}, in {job['location']}")
+
+                            # Ask the user which job they want to update
+                            job_num = int(input("Enter the number of the job you want to update: "))
+
+                            if (job_num < 1) or (job_num > 3):
+                                print("\nInvalid input, please try again.\n")
+                                break 
+
+                            # Get the job that the user wants to update
+                            job = user_data['Job History'][job_num - 1]
+
+                            # Ask the user which attribute they want to update
+                            attribute = int(input("Enter the attribute you want to update ((1) job title, (2) employer, (3) date started, (4) date ended, (5) location, or (6) description): "))
+
+                            if attribute == 1:
+                                new_job_title = input("Enter your new job title: ")
+                                job['job_title'] = new_job_title
+                            elif attribute == 2:
+                                new_employer = input("Enter your new employer: ")
+                                job['employer'] = new_employer
+                            elif attribute == 3:
+                                new_date_started = input("Enter your new date started: ")
+                                job['date_started'] = new_date_started
+                            elif attribute == 4:
+                                new_date_ended = input("Enter your new date ended: ")
+                                job['date_ended'] = new_date_ended
+                            elif attribute == 5:
+                                new_location = input("Enter your new location: ")
+                                job['location'] = new_location
+                            elif attribute == 6:
+                                new_description = input("Enter your new description: ")
+                                job['description'] = new_description
+                            else:
+                                print("\nInvalid option. Please try again.")
+                            save_user_data(user[0], user_data)
+
+
+                    elif choice == 'a':
+                        job_title_add = input("Enter the job title: ")
+                        employer_add = input("Enter the employer: ")
+                        date_started_add = input("Enter the date you started this job: ")
+                        date_ended_add = input("Enter the date you ended this job: ")
+                        location_add = input("Enter the location of this job: ")
+                        description_add = input("Enter a description of what you did at this job: ")
+                        print()
+
+                        user_data["Job History"].append({
+                            'job_title': job_title_add,
+                            'employer': employer_add,
+                            'date_started': date_started_add,
+                            'date_ended': date_ended_add,
+                            'location': location_add,
+                            'description': description_add
+                        })
+                        save_user_data(user[0], user_data)
+
+                    elif choice == 'r':
+                        break
+                        
+                    else:
+                        print("\nInvalid option, please try again.\n")
+
+        elif choice1 == 'n':
+            break
+
+        else:
+            print("\nInvalid option, please try again.\n")
+
+# --- Education Experience Section ---
+def edit_education(user):
+    # loading our user data from json file
+    user_data = load_user_data(user[0])
+
+    # We'll get the current contents of our about section for the user
+    existing_education = user_data.get('Education', '')
+
+    while True:
+        choice1 = input("Would you like to change something about your Education History in your inCollege profile? Input (y)es or (n)o: ")
+
+        if choice1 == 'y':
+            # if the existing education section is initially empty, just grab the input from the user and save it to the json file
+            if existing_education == '':
+                school_name = input("Enter the name of your school: ")
+                degree = input("Enter what degree you obtained: ")
+                years_attended = input("Enter what years did you attended the university for (e.g. 1997 - 2001): ")
+
+                user_data["Education"] = []
+                user_data["Education"].append({
+                    'school_name': school_name,
+                    'degree': degree,
+                    'years_attended': years_attended
+                })
+                save_user_data(user[0], user_data)
+
+            # If it's not empty, we are adding/updating to the education section
+            else:
+                while True:
+                    # Print out the jobs so the user can see what education experience they have
+                    for i, education in enumerate(user_data['Education'], start=1):
+                        print(f"Education Experience {i}: {education['school_name']} with {education['degree']} degree, in the following years: {education['years_attended']}")
+
+                    choice = input("Would you like to (a)dd a new education experience, (u)pdate an existing one, or (r)eturn to the previous screen?: ")
+
+                    if choice == 'u':
+                        while True:
+                            # Print out the jobs so the user can see what jobs they have
+                            for i, education in enumerate(user_data['Education'], start=1):
+                                print(f"Education Experience {i}: {education['school_name']} at {education['degree']}, in the following years: {education['years_attended']}")
+
+                            # Ask the user which education they want to update
+                            job_num = int(input("Enter the number of the education experience you want to update: "))
+
+                            if (job_num < 1):
+                                print("\nInvalid input, please try again.\n")
+                                break 
+
+                            # Get the education that the user wants to update
+                            education = user_data['Education'][job_num - 1]
+
+                            # Ask the user which attribute they want to update
+                            attribute = int(input("Enter the attribute you want to update ((1) education title, (2) degree, (3) years attended): "))
+
+                            if attribute == 1:
+                                new_school_name = input("Enter the new education title you want to update: ")
+                                education['school_name'] = new_school_name
+                            elif attribute == 2:
+                                new_degree = input("Enter the degree you want to update: ")
+                                education['degree'] = new_degree
+                            elif attribute == 3:
+                                new_years_attended = input("Enter the new years that you attended the school for: ")
+                                education['years_attended'] = new_years_attended
+                            else:
+                                print("\nInvalid option. Please try again.")
+                            save_user_data(user[0], user_data)
+
+                    elif choice == 'a':
+                        school_name = input("Enter the name of your school: ")
+                        degree = input("Enter what degree you obtained: ")
+                        years_attended = input("Enter what years did you attended the university for (e.g. 1997 - 2001): ")
+
+                        user_data["Education"].append({
+                            'school_name': school_name,
+                            'degree': degree,
+                            'years_attended': years_attended
+                        })
+                        save_user_data(user[0], user_data)
+
+                    elif choice == 'r':
+                        break
+                        
+                    else:
+                        print("\nInvalid option, please try again.\n")
+
+        elif choice1 == 'n':
+            break
+
+        else:
+            print("\nInvalid option, please try again.\n")
+
+def view_profile(user):
+    # loading our user data from json file
+    user_data = load_user_data(user[0])
+
+    keys_possibility_1 = ['Title', 'Major', 'University', 'About', 'Job History', 'Education']
+    keys_possibility_2 = ['Title', 'Major', 'University', 'About', 'Education']
+
+    # Checks to see if the user filled out all sections of their profile before they can see it
+    if ((all(key in user_data for key in keys_possibility_1)) or (all(key in user_data for key in keys_possibility_2))):
+
+        print("*** YOUR PROFILE ***")
+        for key, value in user_data.items():
+            if type(value) is list:
+                print(f"{key}: \t")
+                for i, item in enumerate(value, start=1):
+                    print(f"\t{i}:")
+                    for subkey, subvalue in item.items():
+                        print(f"\t\t{subkey}: {subvalue}")
+            else:
+                print(f"{key}: {value}")
+        print()
+
+    else:
+        print("\nYou must complete all required sections of your profile. You don\'t need to have a job experience section, but you must have the other sections!\n")
+        return
+
+# def view_friends_profile(user):
