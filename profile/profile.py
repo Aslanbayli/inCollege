@@ -262,41 +262,73 @@ def edit_job(user):
                             for i, job in enumerate(user_data['Job History'], start=1):
                                 print(f"Job {i}: {job['job_title']} at {job['employer']}, from {job['date_started']} to {job['date_ended']}, in {job['location']}")
 
-                            # Ask the user which job they want to update
-                            job_num = int(input("Enter the number of the job you want to update: "))
+                            # This code deals with the issue if a user types an invalid number within the range, but if a job doesn't exist
+                            try: 
+                                # Ask the user which job they want to update
+                                job_num = int(input("Enter the number of the job you want to update: "))
 
-                            if (job_num < 1) or (job_num > 3):
-                                print("\nInvalid input, please try again.\n")
-                                break 
+                                # If a user types in a number outside the range of 1 to 3 jobs
+                                if (job_num < 1) or (job_num > 3):
+                                    print("Invalid input, please try again.\n")
+                                    raise ValueError
+                            
+                                # Get the job that the user wants to update
+                                job = user_data['Job History'][job_num - 1]
 
-                            # Get the job that the user wants to update
-                            job = user_data['Job History'][job_num - 1]
+                            except IndexError:
+                                print("Invalid choice. You selected a choice that does not exist.\n") 
+                                continue
+                            except ValueError:
+                                print("Please pass in a valid number as your input.\n")
+                                continue
 
-                            # Ask the user which attribute they want to update
-                            attribute = int(input("Enter the attribute you want to update ((1) job title, (2) employer, (3) date started, (4) date ended, (5) location, or (6) description): "))
+                            while True:
+                                try:
+                                    # Ask the user which attribute they want to update
+                                    attribute = int(input("Enter the attribute you want to update ((1) job title, (2) employer, (3) date started, (4) date ended, (5) location, or (6) description): "))
 
-                            if attribute == 1:
-                                new_job_title = input("Enter your new job title: ")
-                                job['job_title'] = new_job_title
-                            elif attribute == 2:
-                                new_employer = input("Enter your new employer: ")
-                                job['employer'] = new_employer
-                            elif attribute == 3:
-                                new_date_started = input("Enter your new date started: ")
-                                job['date_started'] = new_date_started
-                            elif attribute == 4:
-                                new_date_ended = input("Enter your new date ended: ")
-                                job['date_ended'] = new_date_ended
-                            elif attribute == 5:
-                                new_location = input("Enter your new location: ")
-                                job['location'] = new_location
-                            elif attribute == 6:
-                                new_description = input("Enter your new description: ")
-                                job['description'] = new_description
-                            else:
-                                print("\nInvalid option. Please try again.")
+                                    if attribute == 1:
+                                        new_job_title = input("Enter your new job title: ")
+                                        job['job_title'] = new_job_title
+                                        break
+                                    elif attribute == 2:
+                                        new_employer = input("Enter your new employer: ")
+                                        job['employer'] = new_employer
+                                        break
+                                    elif attribute == 3:
+                                        new_date_started = input("Enter your new date started: ")
+                                        job['date_started'] = new_date_started
+                                        break
+                                    elif attribute == 4:
+                                        new_date_ended = input("Enter your new date ended: ")
+                                        job['date_ended'] = new_date_ended
+                                        break
+                                    elif attribute == 5:
+                                        new_location = input("Enter your new location: ")
+                                        job['location'] = new_location
+                                        break
+                                    elif attribute == 6:
+                                        new_description = input("Enter your new description: ")
+                                        job['description'] = new_description
+                                        break
+                                    else:
+                                        print("\nInvalid option. Please try again.")
+                                        raise ValueError
+                            
+                                except ValueError:
+                                    print("Please enter a valid input.")
+                           
                             save_user_data(user[0], user_data)
 
+                            # This block ensures that we aren't stuck forever in the (u)pdate option
+                            user_choice = input("Would you like to continue in updating your jobs? Type (y)es or (n)o: ")
+                            if (user_choice == 'y'):
+                                continue
+                            elif (user_choice == 'n'):
+                                break
+                            else:
+                                print("Invalid option, please try again.")
+                                break
 
                     elif choice == 'a':
                         job_title_add = input("Enter the job title: ")
@@ -370,31 +402,62 @@ def edit_education(user):
                             for i, education in enumerate(user_data['Education'], start=1):
                                 print(f"Education Experience {i}: {education['school_name']} at {education['degree']}, in the following years: {education['years_attended']}")
 
-                            # Ask the user which education they want to update
-                            job_num = int(input("Enter the number of the education experience you want to update: "))
+                            # This code deals with the issue if a user types an invalid number within the range, but if a education experience doesn't exist
+                            try: 
+                                # Ask the user which education they want to update
+                                job_num = int(input("Enter the number of the education experience you want to update: "))
 
-                            if (job_num < 1):
-                                print("\nInvalid input, please try again.\n")
-                                break 
+                                # If a user types in a number outside the range
+                                if (job_num < 1):
+                                    print("Invalid input, please try again.\n")
+                                    raise ValueError
+                                    continue
 
-                            # Get the education that the user wants to update
-                            education = user_data['Education'][job_num - 1]
+                                # Get the education that the user wants to update
+                                education = user_data['Education'][job_num - 1]
 
-                            # Ask the user which attribute they want to update
-                            attribute = int(input("Enter the attribute you want to update ((1) education title, (2) degree, (3) years attended): "))
+                            except IndexError:
+                                print("Invalid choice. You selected a choice that does not exist.\n") 
+                                continue
+                            except ValueError:
+                                print("Please pass in a valid number as your input.\n")
+                                continue
+                            
+                            while True:
+                                try:
+                                    # Ask the user which attribute they want to update
+                                    attribute = int(input("Enter the attribute you want to update ((1) education title, (2) degree, (3) years attended): "))
 
-                            if attribute == 1:
-                                new_school_name = input("Enter the new education title you want to update: ")
-                                education['school_name'] = new_school_name
-                            elif attribute == 2:
-                                new_degree = input("Enter the degree you want to update: ")
-                                education['degree'] = new_degree
-                            elif attribute == 3:
-                                new_years_attended = input("Enter the new years that you attended the school for: ")
-                                education['years_attended'] = new_years_attended
-                            else:
-                                print("\nInvalid option. Please try again.")
+                                    if attribute == 1:
+                                        new_school_name = input("Enter the new education title you want to update: ")
+                                        education['school_name'] = new_school_name
+                                        break
+                                    elif attribute == 2:
+                                        new_degree = input("Enter the degree you want to update: ")
+                                        education['degree'] = new_degree
+                                        break
+                                    elif attribute == 3:
+                                        new_years_attended = input("Enter the new years that you attended the school for: ")
+                                        education['years_attended'] = new_years_attended
+                                        break
+                                    else:
+                                        print("\nInvalid option. Please try again.")
+                                        raise ValueError
+
+                                except ValueError:
+                                    print("Please enter a number.")
+                                
                             save_user_data(user[0], user_data)
+
+                            # This block ensures that we aren't stuck forever in the (u)pdate option
+                            user_choice = input("Would you like to continue in updating education experience? Type (y)es or (n)o: ")
+                            if (user_choice == 'y'):
+                                continue
+                            elif (user_choice == 'n'):
+                                break
+                            else:
+                                print("Invalid option, please try again.")
+                                break
 
                     elif choice == 'a':
                         school_name = input("Enter the name of your school: ")
@@ -458,7 +521,7 @@ def view_friends_profile(user):
             friends = data[10:]
 
     if not friends:
-        print("You have no friends! Go get some friends.")
+        print("You have no friends! Go get some friends.\n")
         return
 
     friend_list_view = []
