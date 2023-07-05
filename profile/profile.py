@@ -544,11 +544,11 @@ def view_friends_profile(user):
         else:
             friend_list_view.append((f, f, first_name, last_name))
 
-    print("*** FRIENDS ***")
-    for index, friend in enumerate(friend_list_view, start=1):
-        print(f"{index} {friend[1]}")
-
     while True:
+        print("*** FRIENDS ***")
+        for index, friend in enumerate(friend_list_view, start=1):
+            print(f"{index} {friend[1]}")
+
         choice = input("Please type the number next to your friend whose profile you would like to see. Only enter the number of the friend whose name has \'[PROFILE]\' tag next to them. Press (11) if you want to go back: ")
         try:
             choice1 = int(choice)
@@ -574,6 +574,6 @@ def view_friends_profile(user):
                         print(f"{key}: {value}")
                 print()
             else:
-                print("The selected friend does not have a profile.")
+                print("The selected friend does not have a profile.\n")
         else:
-            print("Invalid option, please try again. Their profile is probably not displayed, or you didn't pass in a correct input")
+            print("Invalid option, please try again. Their profile is probably not displayed, or you didn't pass in a correct input.\n")
