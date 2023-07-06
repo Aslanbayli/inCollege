@@ -48,21 +48,21 @@ def find_friend(users, current_user, friend_request): #This is a function for lo
         ).lower()
         matching_users = []
         if search_option == "l": #This is the option for choosing to search using last name
-            type = input("Please type the last name: ")
+            search_option = input("Please type the last name: ")
             for user in users:
-                if users[user][2] == type and user != current_user[0]:
+                if users[user][2].lower() == search_option.lower() and user != current_user[0]:
                     matching_users.append(user)
                     found = 1
         elif search_option == "u": #This is the option for choosing to search using university
-            type = input("Please type the university: ")
+            search_option = input("Please type the university: ")
             for user in users:
-                if users[user][7] == type and user != current_user[0] :
+                if users[user][7].lower() == search_option.lower() and user != current_user[0] :
                     matching_users.append(user)
                     found = 1
         elif search_option == "m": #This is the option for choosing to search using major
-            type = input("Please type the major: ")
+            search_option = input("Please type the major: ")
             for user in users:
-                if users[user][8] == type and user != current_user[0]:
+                if users[user][8].lower() == search_option.lower() and user != current_user[0]:
                     matching_users.append(user)
                     found = 1
         elif search_option == "r": #This is the option for returning
@@ -600,12 +600,33 @@ Last updated: 6/19/2023
             print("***(2) RETURN ***")
             privacy_choice = input("Please select one of these options (press 1-2): ")
             if privacy_choice == '1':
+                if state == "logged_in":
+                    if (user[4] == 'True' and user[5] == 'True' and user[6] == 'True'):
+                        print("\ninCollege Email, SMS, and Targeted Advertising are Enabled\n")
+                    elif (user[4] == 'True' and user[5] == 'True' and user[6] == 'False'):
+                        print("\ninCollege Email amd SMS are Enabled. Targeted Advertising is Disabled\n")
+                    elif (user[4] == 'True' and user[5] == 'False' and user[6] == 'True'):
+                        print("\ninCollege Email amd Targeted Advertising are Enabled. SMS is Disabled\n")
+                    elif (user[4] == 'True' and user[5] == 'False' and user[6] == 'False'):
+                        print("\ninCollege Email is Enabled. SMS and Targeted Advertising are Disabled\n")
+                    elif (user[4] == 'False' and user[5] == 'True' and user[6] == 'True'):
+                        print("\nSMS and Targeted Advertising are Enabled. InCollege Email is Disabled\n")
+                    elif (user[4] == 'False' and user[5] == 'True' and user[6] == 'False'):
+                        print("\ninCollege Email and Targeted Advertising are Disabled. SMS is Enabled\n")
+                    elif (user[4] == 'False' and user[5] == 'False' and user[6] == 'True'):
+                        print("\ninCollege Email and SMS are Disabled. Targeted Advertising is Enabled\n")
+                    elif (user[4] == 'False' and user[5] == 'False' and user[6] == 'False'):
+                        print("\ninCollege Email, SMS, and Targeted Advertising are Disabled\n")
+                else:
+                    pass
+
                 print("\n****** GUEST CONTROLS ******")
                 print("***(1) DISABLE/ENABLE inCollege EMAIL ***")
                 print("***(2) DISABLE/ENABLE SMS ***")
                 print("***(3) DISABLE/ENABLE TARGETED ADVERTISING ***")
                 print("***(4) RETURN ***")
                 guest_control_choice = input("Please select one of these options (press 1-3): ")
+                
                 if user != '':
                     if guest_control_choice == '4':
                         print("\n*** RETURNING TO SELECTION MENU ***")
@@ -621,15 +642,23 @@ Last updated: 6/19/2023
                                 if username == user[0]:
                                     if guest_control_choice == '1':
                                         email_bool = str(not eval(email_bool))
+                                        user[4] = email_bool
+                                        
                                     elif guest_control_choice == '2':
                                         sms_bool = str(not eval(sms_bool) )
+                                        user[5] = sms_bool
+                                        
                                     elif guest_control_choice == '3':
                                         targeted_ads_bool = str(not eval(targeted_ads_bool))
+                                        user[6] = targeted_ads_bool
+                                        
 
                                 line = ','.join([username, passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool]) + ','
                                 rest_of_line = ','.join(items[8:])
                                 line += rest_of_line + '\n'
                                 new_lines.append(line)
+                    
+                                    
                         
                         with open("data/database.csv", "w") as file:
                             for line in new_lines:
