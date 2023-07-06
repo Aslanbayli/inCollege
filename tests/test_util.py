@@ -3,20 +3,22 @@ from util import util
 
 # Test file save function
 def test_file_save():
+    friend_request = {"User1": ["User2"]}
     users = {
-        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User1LastName", "English", "False", "False", "True"],
-        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt(rounds=12)), "User2FirstName", "User2LastName", "Spanish", "False", "False", "True"],
+        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt()), "User1FirstName", "User1LastName", "English", "False", "False", "True", "USF", "Computer Science"],
+        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt()), "User2FirstName", "User2LastName", "Spanish", "False", "False", "True", "USF", "Computer Science"],
     }
 
-    test = {}
-    util.file_save(users, filename="tests/test_database.csv")
+    util.file_save(friend_request, users, database_path="tests/test_database.csv", friend_request_path="tests/test_friend_request.csv")
 
     # Read the saved file and check if the data is correct
-    util.file_read(test, filename="tests/test_database.csv")
-    assert "User1" in test
-    assert "User2" in test
-    assert bcrypt.checkpw(b"Password1!", test["User1"][0])
-    assert bcrypt.checkpw(b"Password2!", test["User2"][0])
+    users_test = {}
+    friend_request_test = {}
+    util.file_read(users_test, friend_request_test, database_path="tests/test_database.csv", friend_request_path="tests/test_friend_request.csv")
+    assert "User1" in users_test
+    assert "User2" in users_test
+    assert bcrypt.checkpw(b"Password1!", users_test["User1"][0])
+    assert bcrypt.checkpw(b"Password2!", users_test["User2"][0])
 
 # Test file job save function
 def test_file_job_save():
@@ -36,7 +38,7 @@ def test_file_job_save():
 
 # Test database_check function
 def test_database_check():
-    test1_users_full = {"user1", "user2", "user3", "user4", "user5", "user6"}
+    test1_users_full = {"user1", "user2", "user3", "user4", "user5", "user6", "user7", "user8", "user9", "user10", "user11"}
     test_users_not_full = {"user1", "user2", "user3", "user4", "user5"}
     
     assert util.database_check(test1_users_full) == True
@@ -44,13 +46,13 @@ def test_database_check():
 
 # Test file read function
 def test_file_read():
-    test_users_file_read = {}
-    test_filename = "tests/test_database.csv"
-    util.file_read(test_users_file_read, test_filename)
+    users_test = {}
+    friend_request_test = {}
+    util.file_read(users_test, friend_request_test, database_path="tests/test_database.csv", friend_request_path="tests/test_friend_request.csv")
 
     # See if the read was successful 
-    assert "User1" in test_users_file_read
-    assert "User2" in test_users_file_read
+    assert "User1" in users_test
+    assert "User2" in users_test
 
 # Test file job read function
 def test_file_job_read():
@@ -73,20 +75,17 @@ def test_file_job_read():
 
 
 # Test connect function
-def test_connect():
+def test_find_friend(monkeypatch):
+    inputs = iter(["l", "User1LastName", "l", "SomeLastName"])
+    monkeypatch.setattr('builtins.input', lambda _: next(inputs))
+
     users_test = {
-        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt(rounds=12)), "User1FirstName", "User1LastName"],
-        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt(rounds=12)), "User2FirstName", "User2LastName"]
+        "User1": [bcrypt.hashpw(b"Password1!", bcrypt.gensalt()), "User1FirstName", "User1LastName"],
+        "User2": [bcrypt.hashpw(b"Password2!", bcrypt.gensalt()), "User2FirstName", "User2LastName"]
     }
 
     # Test to see if the condition holds true
-    test_first_name = "User1FirstName"
-    test_last_name = "User1LastName"
+    assert util.find_friend(users_test) == True
 
-    assert util.connect(users_test, test_first_name, test_last_name) == True
-
-    # Test for false conditions
-    test_first_name = "User1FitName"
-    test_last_name = "User1LName"
-
-    assert util.connect(users_test, test_first_name, test_last_name) == False    
+    # Test to see if the condition holds false
+    assert util.find_friend(users_test) == False    
