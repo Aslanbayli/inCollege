@@ -37,9 +37,9 @@ def profile_options(user):
         else:
             print("\n Invalid option, try again.\n")
 
-def load_user_data(username):
+def load_user_data(username, file="data/user_data.json"):
     # We load all the user_data that is stored in the user_data json file
-    with open('../data/user_data.json', 'r') as f:
+    with open(file, 'r') as f:
         user_data = json.load(f)
     
     # We now return profile data that is specific to the user we want to deal with
@@ -48,21 +48,21 @@ def load_user_data(username):
     else:
         return {}
 
-def save_user_data(username, user_data):
+def save_user_data(username, user_data, file = "data/user_data.json"):
     # get the existing user_data that exists for our specific user 
-    with open('../data/user_data.json', 'r') as f:
+    with open(file, 'r') as f:
         existing_user_data = json.load(f)
 
     # updating the existing user_data with new input from the user
     existing_user_data[username] = user_data
 
-    with open('../data/user_data.json', 'w') as f:
+    with open(file, 'w') as f:
         json.dump(existing_user_data, f)
 
 # --- Title Edit Section ---
-def edit_title(user):
+def edit_title(user, file="data/user_data.json"):
     # loading our user data from json file
-    user_data = load_user_data(user[0])
+    user_data = load_user_data(user[0], file)
 
     # We'll get the current contents of our title for the user
     existing_title = user_data.get('Title', '')
@@ -71,7 +71,7 @@ def edit_title(user):
     if existing_title == '': 
         title = input("Please enter the title for your profile: ")
         user_data["Title"] = title
-        save_user_data(user[0], user_data)
+        save_user_data(user[0], user_data, file)
 
     # if it's not empty, add-on to the existing title
     else:
@@ -85,20 +85,20 @@ def edit_title(user):
             if choice == 'a': 
                 additional_stuff = input("Please enter what you want to add to your title: ")
                 user_data["Title"] = existing_title + (' ' if existing_title else '') + additional_stuff
-                save_user_data(user[0], user_data)
+                save_user_data(user[0], user_data, file)
                 break
             elif choice == 'o':
                 new_title = input("Please enter the new title for your profile: ")
                 user_data["Title"] = new_title
-                save_user_data(user[0], user_data)
+                save_user_data(user[0], user_data ,file)
                 break
             else:
                 print("\nInvalid option, try again.\n")
 
 # --- College Major Edit Section ---    
-def edit_major(user):
+def edit_major(user, file="data/user_data.json"):
     # loading our user data from json file
-    user_data = load_user_data(user[0])
+    user_data = load_user_data(user[0], file)
 
     # We'll get the current contents of our major for the user
     existing_major = user_data.get('Major', '')
@@ -108,7 +108,7 @@ def edit_major(user):
         major = input("Please type out your official major on your profile: ")
         capitalized_major = ' '.join([word[0].upper() + word[1:].lower() for word in major.split()])
         user_data["Major"] = capitalized_major
-        save_user_data(user[0], user_data)
+        save_user_data(user[0], user_data, file)
 
     # if it's not empty, add-on to the existing major
     else:
@@ -123,13 +123,13 @@ def edit_major(user):
                 additional_stuff = input("Please enter what you want to add to your major: ")
                 capitalized_additional_stuff = ' '.join([word[0].upper() + word[1:].lower() for word in additional_stuff.split()])
                 user_data["Major"] = existing_major + (' ' if existing_major else '') + capitalized_additional_stuff
-                save_user_data(user[0], user_data)
+                save_user_data(user[0], user_data, file)
                 break
             elif choice == 'o':
                 new_major = input("Please enter the new major for your profile: ")
                 capitalized_major = ' '.join([word[0].upper() + word[1:].lower() for word in new_major.split()])
                 user_data["Major"] = capitalized_major
-                save_user_data(user[0], user_data)
+                save_user_data(user[0], user_data, file)
                 break
             else:
                 print("\nInvalid option, try again.\n")
