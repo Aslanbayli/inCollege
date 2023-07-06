@@ -1,7 +1,7 @@
 # Save the users dictionary to the database file
-def file_save(friend_request, users):
+def file_save(friend_request, users, database_path = "data/database.csv", friend_request_path = "data/request.csv"):
     
-    with open("data/database.csv", 'w') as file:
+    with open(database_path, 'w') as file:
         for username in users:
             passwd = str(users[username][0])
             f_name = users[username][1]
@@ -20,7 +20,7 @@ def file_save(friend_request, users):
             line += "\n"
             file.write(line)
     
-    with open("data/request.csv", 'w') as file:
+    with open(friend_request_path, 'w') as file:
         for username in friend_request:
             request = friend_request[username][0:]
             request_str = ",".join(request)
@@ -51,8 +51,8 @@ def database_check(users):
         return False
 
 # Read from the database file and populate the users dictionary
-def file_read(users, friend_request):
-    with open("data/database.csv", "r") as file:
+def file_read(users, friend_request, database_path = "data/database.csv", friend_request_path = "data/request.csv"):
+    with open(database_path, "r") as file:
         file.seek(0)
         for line in file:
             data = line.strip().split(',')
@@ -79,7 +79,7 @@ def file_read(users, friend_request):
             else:
                 continue
 
-    with open("data/request.csv", "r") as file:
+    with open(friend_request_path, "r") as file:
         file.seek(0)
         for line in file:
             data = line.strip().split(',')
@@ -114,21 +114,21 @@ def find_friend(users):
         ).lower()
         matching_users = []
         if search_option == "l":
-            type = input("Please type the last name: ")
+            search_type = input("Please type the last name: ")
             for user in users:
-                if users[user][2] == type:
+                if users[user][2] == search_type:
                     matching_users.append(user)
                     found = 1
         elif search_option == "u":
-            type = input("Please type the university: ")
+            search_type = input("Please type the university: ")
             for user in users:
-                if users[user][7] == type:
+                if users[user][7] == search_type:
                     matching_users.append(user)
                     found = 1
         elif search_option == "m":
-            type = input("Please type the major: ")
+            search_type = input("Please type the major: ")
             for user in users:
-                if users[user][8] == type:
+                if users[user][8] == search_type:
                     matching_users.append(user)
                     found = 1
         elif search_option == "r":
