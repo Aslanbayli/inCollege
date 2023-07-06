@@ -1,27 +1,21 @@
 from selection import selection_menu as select
 
 def test_selection_menu_options(monkeypatch, capsys):
-    inputs = iter(['2', '6'])
+    inputs = iter(['2', '6','r','8'])
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
-    user = ["username", "first_name", "last_name", "language"]
-    select.selection_menu_options(user)
+    user = ["username", "first_name", "last_name", "language", False, False, False, "university", "major"]
+    select.selection_menu_options(user, [], [], [], [])
     
     out, _ = capsys.readouterr()
-    assert out == "\n****** SELECTION MENU ******\n\
-***(1) SEARCH FOR A JOB***\n\
-***(2) FIND SOMEONE YOU KNOW***\n\
-***(3) LEARN A NEW SKILL***\n\
-***(4) USEFUL LINKS***\n\
-***(5) IMPORTANT LINKS***\n\
-***(6) LOG OUT***\n\
-\nUnder construction, check back later....\n\
-\n****** SELECTION MENU ******\n\
-***(1) SEARCH FOR A JOB***\n\
-***(2) FIND SOMEONE YOU KNOW***\n\
-***(3) LEARN A NEW SKILL***\n\
-***(4) USEFUL LINKS***\n\
-***(5) IMPORTANT LINKS***\n\
-***(6) LOG OUT***\n"
+    assert """\n****** SELECTION MENU ******
+***(1) SEARCH FOR A JOB***
+***(2) FIND SOMEONE YOU KNOW***
+***(3) LEARN A NEW SKILL***
+***(4) USEFUL LINKS***
+***(5) IMPORTANT LINKS***
+***(6) SHOW MY NETWORK***
+***(7) VIEW/EDIT MY PROFILE***
+***(8) LOG OUT***""" in out
 
 def test_job_search(monkeypatch, capsys):
     inputs = iter(['1', '3', 'y'])
