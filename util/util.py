@@ -1,7 +1,7 @@
 # Save the users dictionary to the database file
 def file_save(friend_request, users):
     
-    with open("../data/database.csv", 'w') as file:
+    with open("data/database.csv", 'w') as file:
         for username in users:
             passwd = str(users[username][0])
             f_name = users[username][1]
@@ -20,7 +20,7 @@ def file_save(friend_request, users):
             line += "\n"
             file.write(line)
     
-    with open("../data/request.csv", 'w') as file:
+    with open("data/request.csv", 'w') as file:
         for username in friend_request:
             request = friend_request[username][0:]
             request_str = ",".join(request)
@@ -31,7 +31,7 @@ def file_save(friend_request, users):
             file.write(line)
 
             
-def file_job_save(jobs, filename = "../data/jobs.csv"):
+def file_job_save(jobs, filename = "data/jobs.csv"):
     with open(filename, 'w') as file:
         for job in jobs:
             j_title = job["title"]
@@ -52,7 +52,7 @@ def database_check(users):
 
 # Read from the database file and populate the users dictionary
 def file_read(users, friend_request):
-    with open("../data/database.csv", "r") as file:
+    with open("data/database.csv", "r") as file:
         file.seek(0)
         for line in file:
             data = line.strip().split(',')
@@ -79,7 +79,7 @@ def file_read(users, friend_request):
             else:
                 continue
 
-    with open("../data/request.csv", "r") as file:
+    with open("data/request.csv", "r") as file:
         file.seek(0)
         for line in file:
             data = line.strip().split(',')
@@ -94,7 +94,7 @@ def file_read(users, friend_request):
             else:
                 continue
 
-def file_job_read(jobs, filename="../data/jobs.csv"):
+def file_job_read(jobs, filename="data/jobs.csv"):
     with open(filename, "r") as file:
         file.seek(0)
         for line in file:
