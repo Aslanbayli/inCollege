@@ -39,7 +39,7 @@ def profile_options(user):
 
 def load_user_data(username):
     # We load all the user_data that is stored in the user_data json file
-    with open('data/user_data.json', 'r') as f:
+    with open('../data/user_data.json', 'r') as f:
         user_data = json.load(f)
     
     # We now return profile data that is specific to the user we want to deal with
@@ -50,13 +50,13 @@ def load_user_data(username):
 
 def save_user_data(username, user_data):
     # get the existing user_data that exists for our specific user 
-    with open('data/user_data.json', 'r') as f:
+    with open('../data/user_data.json', 'r') as f:
         existing_user_data = json.load(f)
 
     # updating the existing user_data with new input from the user
     existing_user_data[username] = user_data
 
-    with open('data/user_data.json', 'w') as f:
+    with open('../data/user_data.json', 'w') as f:
         json.dump(existing_user_data, f)
 
 # --- Title Edit Section ---
@@ -511,7 +511,7 @@ def view_profile(user):
         return
 
 def view_friends_profile(user):
-    with open("data/database.csv", "r") as file:
+    with open("../data/database.csv", "r") as file:
         lines = file.readlines()
 
     friends = []
@@ -544,11 +544,11 @@ def view_friends_profile(user):
         else:
             friend_list_view.append((f, f, first_name, last_name))
 
-    print("*** FRIENDS ***")
-    for index, friend in enumerate(friend_list_view, start=1):
-        print(f"{index} {friend[1]}")
-
     while True:
+        print("*** FRIENDS ***")
+        for index, friend in enumerate(friend_list_view, start=1):
+            print(f"{index} {friend[1]}")
+
         choice = input("Please type the number next to your friend whose profile you would like to see. Only enter the number of the friend whose name has \'[PROFILE]\' tag next to them. Press (11) if you want to go back: ")
         try:
             choice1 = int(choice)
@@ -574,6 +574,6 @@ def view_friends_profile(user):
                         print(f"{key}: {value}")
                 print()
             else:
-                print("The selected friend does not have a profile.")
+                print("The selected friend does not have a profile.\n")
         else:
-            print("Invalid option, please try again. Their profile is probably not displayed, or you didn't pass in a correct input")
+            print("Invalid option, please try again. Their profile is probably not displayed, or you didn't pass in a correct input.\n")
