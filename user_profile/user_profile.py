@@ -511,7 +511,7 @@ def view_profile(user):
         return
 
 def view_friends_profile(user):
-    with open("../data/database.csv", "r") as file:
+    with open("data/database.csv", "r") as file:
         lines = file.readlines()
 
     friends = []
