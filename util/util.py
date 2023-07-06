@@ -76,9 +76,9 @@ def file_read(users, friend_request):
                     users[username] += additional_data
                 else:
                     users[username] = [passwd, f_name, l_name, language, email_bool, sms_bool, targeted_ads_bool, university, major] + additional_data
-
             else:
                 continue
+
     with open("data/request.csv", "r") as file:
         file.seek(0)
         for line in file:
@@ -91,7 +91,6 @@ def file_read(users, friend_request):
                     friend_request[username] += additional_data
                 else:
                     friend_request[username] =  additional_data
-
             else:
                 continue
 

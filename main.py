@@ -139,7 +139,6 @@ def main():
                 print("\nYou have successfully logged in.")
 
                 # Check for pending friend requests
-
                 user = [
                     username,
                     users[username][1],
