@@ -2,7 +2,7 @@ import json
 
 def profile_options(user):
     while True:
-        print("*** (1) EDIT TITLE ***")
+        print("\n*** (1) EDIT TITLE ***")
         print("*** (2) EDIT MAJOR ***")
         print("*** (3) EDIT UNIVERSITY NAME ***")
         print("*** (4) EDIT ABOUT ***")
